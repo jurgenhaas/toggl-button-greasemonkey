@@ -1,13 +1,11 @@
 // ==UserScript==
-// @name        drupal
+// @name        Toggl-Button Drupal
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
 // @version     0.01
 // @include     https://drupal.org/node/*
 // @grant       GM_xmlhttpRequest
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
 // ==/UserScript==
-
-// <body class="html not-front logged-in one-sidebar sidebar-second page-node page-node- page-node-1391926 node-type-project-issue drupalorg-site-main" >
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
   togglbutton.render('body.node-type-project-issue', {}, function (elem) {
