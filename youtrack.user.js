@@ -5,7 +5,7 @@
 // @include     http*://youtrack.*/*
 // @include     http*://*/youtrack/*
 // @grant       GM_xmlhttpRequest
-// @require     TogglLibrary.js
+// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
 // ==/UserScript==
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {

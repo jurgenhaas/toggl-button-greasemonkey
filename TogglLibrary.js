@@ -65,7 +65,7 @@ var TogglButton = {
     }
     GM_xmlhttpRequest({
       method: "PUT",
-      url: TogglButton.$newApiUrl + "/time_entries" + entryId + "/stop",
+      url: TogglButton.$newApiUrl + "/time_entries/" + entryId + "/stop",
       headers: {
         "Authorization": "Basic " + btoa(TogglButton.$user.api_token + ':api_token')
       }
