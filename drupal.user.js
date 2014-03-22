@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button Drupal
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     0.01
+// @version     0.90
 // @include     https://drupal.org/node/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
@@ -9,6 +9,7 @@
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
+// @require     http://sizzlemctwizzle.com/422156.js
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
 // ==/UserScript==
 
