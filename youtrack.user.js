@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button YouTrack
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     0.01
+// @version     0.90
 // @include     http*://youtrack.*/*
 // @include     http*://*/youtrack/*
 // @grant       GM_xmlhttpRequest
@@ -9,7 +9,10 @@
 // @grant       GM_getResourceText
 // @grant       GM_getValue
 // @grant       GM_setValue
+// @grant       GM_info
+// @grant       GM_registerMenuCommand
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
+// @require     http://sizzlemctwizzle.com/422156.js
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
 // ==/UserScript==
 
