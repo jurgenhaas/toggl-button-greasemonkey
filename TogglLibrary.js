@@ -250,7 +250,9 @@ var togglbutton = {
 };
 
 function createProjectSelect() {
-  var pid, select = createTag('select', 'toggl-button-project-select');
+  var pid,
+    wrapper = createTag('div', 'toggl-button-project-select'),
+    select = createTag('select');
 
   for (pid in TogglButton.$user.projectMap) {
     var optgroup, project = TogglButton.$user.projectMap[pid];
@@ -276,5 +278,6 @@ function createProjectSelect() {
 
   select.value = togglbutton.projectId;
 
-  return select;
+  wrapper.appendChild(select);
+  return wrapper;
 }
