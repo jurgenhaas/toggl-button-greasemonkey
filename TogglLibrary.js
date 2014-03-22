@@ -10,13 +10,27 @@ var TogglButton = {
       url: apiUrl + "/me?with_related_data=true",
       onload: function(result) {
         if (result.status === 200) {
-          var projectMap = {}, resp = JSON.parse(result.responseText);
+          var clientMap = {}, projectMap = {}, resp = JSON.parse(result.responseText);
+          clientMap[0] = 'No Client';
+          if (resp.data.clients) {
+            resp.data.clients.forEach(function (client) {
+              clientMap[client.id] = client.name;
+            });
+          }
           if (resp.data.projects) {
             resp.data.projects.forEach(function (project) {
-              projectMap[project.name] = project.id;
+              if (clientMap[project.cid] == undefined) {
+                project.cid = 0;
+              }
+              projectMap[project.id] = {
+                id: project.id,
+                cid: project.cid,
+                name: project.name
+              };
             });
           }
           TogglButton.$user = resp.data;
+          TogglButton.$user.clientMap = clientMap;
           TogglButton.$user.projectMap = projectMap;
           callback();
         } else if (apiUrl === TogglButton.$apiUrl) {
@@ -39,9 +53,6 @@ var TogglButton = {
           created_with: timeEntry.createdWith || 'GM TogglButton'
         }
       };
-    if (timeEntry.projectName !== undefined) {
-      entry.time_entry.pid = TogglButton.$user.projectMap[timeEntry.projectName];
-    }
     GM_xmlhttpRequest({
       method: "POST",
       url: TogglButton.$newApiUrl + "/time_entries",
@@ -168,6 +179,8 @@ var togglbutton = {
   isStarted: false,
   link: null,
   buttonTypeMinimal: false,
+  projectSelector: window.location.host,
+  projectId: 0,
   render: function (selector, opts, renderer) {
     if (TogglButton.newMessage({type: 'activate'})) {
       togglbutton.renderTo(selector, renderer);
@@ -185,6 +198,10 @@ var togglbutton = {
   },
 
   createTimerLink: function (params) {
+    if (params.projectIds !== undefined) {
+      this.projectSelector += '-' + params.projectIds.join('-');
+    }
+    this.projectId = GM_getValue(this.projectSelector, 0);
     GM_addStyle(GM_getResourceText('togglStyle'));
     this.link = createLink('toggl-button');
     this.link.classList.add(params.className);
@@ -203,9 +220,8 @@ var togglbutton = {
       } else {
         opts = {
           type: 'timeEntry',
-          projectId: invokeIfFunction(params.projectId),
+          projectId: togglbutton.projectId,
           description: invokeIfFunction(params.description),
-          projectName: invokeIfFunction(params.projectName),
           createdWith: 'GM TogglButton - ' + params.className
         };
       }
@@ -221,12 +237,44 @@ var togglbutton = {
     // check if our link is the current time entry and set the state if it is
     var opts = {
       type: 'checkCurrentTimeEntry',
-      projectId: invokeIfFunction(params.projectId),
-      description: invokeIfFunction(params.description),
-      projectName: invokeIfFunction(params.projectName)
+      projectId: togglbutton.projectId,
+      description: invokeIfFunction(params.description)
     };
     TogglButton.newMessage(opts);
+
+    $(params.targetSelectors.link).appendChild(this.link);
+    $(params.targetSelectors.projectSelect).appendChild(createProjectSelect());
 
     return this.link;
   }
 };
+
+function createProjectSelect() {
+  var pid, select = createTag('select', 'toggl-button-project-select');
+
+  for (pid in TogglButton.$user.projectMap) {
+    var optgroup, project = TogglButton.$user.projectMap[pid];
+    if (typeof TogglButton.$user.clientMap[project.cid] === 'string') {
+      optgroup = createTag('optgroup');
+      optgroup.label = TogglButton.$user.clientMap[project.cid];
+      TogglButton.$user.clientMap[project.cid] = optgroup;
+      select.appendChild(optgroup);
+    } else {
+      optgroup = TogglButton.$user.clientMap[project.cid];
+    }
+    var option = document.createElement('option');
+    option.setAttribute('value', project.id);
+    option.text = project.name;
+    optgroup.appendChild(option);
+  }
+
+  select.addEventListener('change', function (e) {
+    togglbutton.projectId = select.value;
+    GM_setValue(togglbutton.projectSelector, togglbutton.projectId);
+
+  });
+
+  select.value = togglbutton.projectId;
+
+  return select;
+}

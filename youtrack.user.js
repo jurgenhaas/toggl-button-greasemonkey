@@ -7,13 +7,15 @@
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
 // @grant       GM_getResourceText
+// @grant       GM_getValue
+// @grant       GM_setValue
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
 // ==/UserScript==
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
   togglbutton.render('.issueContainer', {}, function (elem) {
-    var link, description,
+    var link, description, projectIds = [],
       numElem = $('.issueId', elem),
       titleElem = $('.issue-summary', elem),
       projectElem = $('.something');
@@ -23,11 +25,18 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       description = numElem.innerHTML + " " + description;
     }
 
+    if (projectElem !== null) {
+      projectIds.push(projectElem.textContent);
+    }
+
     link = togglbutton.createTimerLink({
       className: 'youtrack',
       description: description,
-      projectName: projectElem && projectElem.textContent
+      projectIds: projectIds,
+      targetSelectors: {
+        link: '.fsi-toolbar-content',
+        projectSelect: '.fsi-toolbar-content'
+      }
     });
-    $('.fsi-toolbar-content').appendChild(link);
   });
 });
