@@ -5,6 +5,8 @@
 // @include     http*://youtrack.*/*
 // @include     http*://*/youtrack/*
 // @grant       GM_xmlhttpRequest
+// @grant       GM_addStyle
+// @grant       GM_getResourceText
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
 // ==/UserScript==
@@ -26,8 +28,6 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       description: description,
       projectName: projectElem && projectElem.textContent
     });
-
     $('.fsi-toolbar-content').appendChild(link);
   });
-
 });

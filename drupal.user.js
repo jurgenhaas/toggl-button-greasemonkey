@@ -4,13 +4,14 @@
 // @version     0.01
 // @include     https://drupal.org/node/*
 // @grant       GM_xmlhttpRequest
+// @grant       GM_addStyle
+// @grant       GM_getResourceText
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
 // ==/UserScript==
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
   togglbutton.render('body.node-type-project-issue', {}, function (elem) {
-
     var link, description,
       href = document.getElementById('tabs').getElementsByTagName('a')[0].getAttribute('href'),
       id = href.match(/(?:node|comment\/reply)\/(\d+)/)[1],
@@ -27,8 +28,6 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       description: description,
       projectName: projectElem && projectElem.textContent
     });
-
-    $('#tabs').appendChild(link);
+    $('.submitted').appendChild(link);
   });
-
 });
