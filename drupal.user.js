@@ -20,13 +20,13 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       titleElem = $('#page-subtitle', elem),
       projectElem = $('.field-name-field-project .field-items .field-item');
 
-    description = titleElem.innerHTML;
+    description = titleElem.textContent.trim();
     if (id !== null) {
       description = id + " " + description;
     }
 
     if (projectElem !== null) {
-      projectIds.push(projectElem.textContent);
+      projectIds.push(projectElem.textContent.trim());
     }
 
     link = togglbutton.createTimerLink({

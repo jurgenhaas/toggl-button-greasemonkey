@@ -21,9 +21,9 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       projectElem = $('.fsi-properties .fsi-property .regCC a'),
       linkElem = $('.fsi-content .links-panel .links .link');
 
-    description = titleElem.innerHTML;
+    description = titleElem.textContent.trim();
     if (numElem !== null) {
-      description = numElem.innerHTML + " " + description;
+      description = numElem.textContent.trim() + " " + description;
     }
 
     if (projectElem !== null) {

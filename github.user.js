@@ -15,17 +15,21 @@
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
   togglbutton.render('#js-discussion-header', {}, function (elem) {
     var link, description, projectIds = [],
-      numElem = $('.issue-number', elem),
+      numElem = $('.gh-header-number', elem),
       titleElem = $('.js-issue-title', elem),
+      authorElem = $('.url.fn'),
       projectElem = $('.js-current-repository');
 
-    description = titleElem.innerText;
+    description = titleElem.textContent.trim();
     if (numElem !== null) {
-      description = numElem.innerText + " " + description;
+      description = numElem.textContent.trim() + " " + description;
     }
 
+    if (authorElem !== null) {
+      projectIds.push(authorElem.textContent.trim());
+    }
     if (projectElem !== null) {
-      projectIds.push(projectElem.textContent);
+      projectIds.push(projectElem.textContent.trim());
     }
 
     link = togglbutton.createTimerLink({
