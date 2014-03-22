@@ -14,11 +14,12 @@
 // ==/UserScript==
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
-  togglbutton.render('.issueContainer', {}, function (elem) {
+  togglbutton.render('.fsi-layout.container', {}, function (elem) {
     var link, description, projectIds = [],
       numElem = $('.issueId', elem),
       titleElem = $('.issue-summary', elem),
-      projectElem = $('.something');
+      projectElem = $('.fsi-properties .fsi-property .regCC a'),
+      linkElem = $('.fsi-content .links-panel .links .link');
 
     description = titleElem.innerHTML;
     if (numElem !== null) {
@@ -26,7 +27,10 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
     }
 
     if (projectElem !== null) {
-      projectIds.push(projectElem.textContent);
+      projectIds.push(projectElem.textContent.trim());
+    }
+    if (linkElem !== null) {
+      projectIds.push(linkElem.textContent.trim());
     }
 
     link = togglbutton.createTimerLink({
