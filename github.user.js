@@ -5,6 +5,7 @@
 // @include     http*://github.com/*
 // @grant       GM_xmlhttpRequest
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
 // ==/UserScript==
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {

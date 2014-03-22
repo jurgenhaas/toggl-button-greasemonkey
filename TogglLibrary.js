@@ -128,6 +128,7 @@ var togglbutton = {
   isStarted: false,
   render: function (selector, opts, renderer) {
     if (TogglButton.newMessage({type: 'activate'})) {
+      GM_addStyle(GM_getResourceText('togglStyle'));
       togglbutton.renderTo(selector, renderer);
     }
   },

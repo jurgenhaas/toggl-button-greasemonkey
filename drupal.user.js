@@ -5,6 +5,7 @@
 // @include     https://drupal.org/node/*
 // @grant       GM_xmlhttpRequest
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
 // ==/UserScript==
 
 // <body class="html not-front logged-in one-sidebar sidebar-second page-node page-node- page-node-1391926 node-type-project-issue drupalorg-site-main" >
