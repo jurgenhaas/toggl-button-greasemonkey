@@ -69,6 +69,7 @@ var TogglButton = {
             return;
           }
           if (params.description === resp.data.description) {
+            TogglButton.$curEntryId = resp.data.id;
             togglbutton.isStarted = false;
             updateLink();
           }
