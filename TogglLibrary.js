@@ -58,6 +58,25 @@ var TogglButton = {
     });
   },
 
+  checkCurrentTimeEntry: function (params) {
+    GM_xmlhttpRequest({
+      method: "GET",
+      url: TogglButton.$newApiUrl + "/time_entries/current",
+      onload: function(result) {
+        if (result.status === 200) {
+          var resp = JSON.parse(result.responseText);
+          if (resp == null) {
+            return;
+          }
+          if (params.description === resp.data.description) {
+            togglbutton.isStarted = false;
+            updateLink();
+          }
+        }
+      }
+    });
+  },
+
   stopTimeEntry: function (entryId) {
     entryId = entryId || TogglButton.$curEntryId;
     if (!entryId) {
@@ -80,6 +99,8 @@ var TogglButton = {
       TogglButton.createTimeEntry(request);
     } else if (request.type === 'stop') {
       TogglButton.stopTimeEntry();
+    } else if (request.type === 'checkCurrentTimeEntry') {
+      TogglButton.checkCurrentTimeEntry(request);
     }
   }
 
@@ -117,6 +138,24 @@ function createLink(className, tagName, linkHref) {
   return link;
 }
 
+function updateLink() {
+  var linkText, color = '';
+
+  if (togglbutton.isStarted) {
+    togglbutton.link.classList.remove('active');
+    linkText = 'Start timer';
+  } else {
+    togglbutton.link.classList.add('active');
+    color = '#1ab351';
+    linkText = 'Stop timer';
+  }
+  togglbutton.isStarted = !togglbutton.isStarted;
+  togglbutton.link.style.color = color;
+  if (!togglbutton.buttonTypeMinimal) {
+    togglbutton.link.innerHTML = linkText;
+  }
+}
+
 function invokeIfFunction(trial) {
   if (trial instanceof Function) {
     return trial();
@@ -126,9 +165,10 @@ function invokeIfFunction(trial) {
 
 var togglbutton = {
   isStarted: false,
+  link: null,
+  buttonTypeMinimal: false,
   render: function (selector, opts, renderer) {
     if (TogglButton.newMessage({type: 'activate'})) {
-      GM_addStyle(GM_getResourceText('togglStyle'));
       togglbutton.renderTo(selector, renderer);
     }
   },
@@ -144,26 +184,22 @@ var togglbutton = {
   },
 
   createTimerLink: function (params) {
-    var link = createLink('toggl-button');
-    link.classList.add(params.className);
+    GM_addStyle(GM_getResourceText('togglStyle'));
+    this.link = createLink('toggl-button');
+    this.link.classList.add(params.className);
 
     if (params.buttonType === 'minimal') {
-      link.classList.add('min');
-      link.removeChild(link.firstChild);
+      this.link.classList.add('min');
+      this.link.removeChild(this.link.firstChild);
+      this.buttonTypeMinimal = true;
     }
 
-    link.addEventListener('click', function (e) {
-      var opts, linkText, color = '';
+    this.link.addEventListener('click', function (e) {
+      var opts = '';
       e.preventDefault();
-
       if (togglbutton.isStarted) {
-        link.classList.remove('active');
-        linkText = 'Start timer';
         opts = {type: 'stop'};
       } else {
-        link.classList.add('active');
-        color = '#1ab351';
-        linkText = 'Stop timer';
         opts = {
           type: 'timeEntry',
           projectId: invokeIfFunction(params.projectId),
@@ -173,16 +209,23 @@ var togglbutton = {
         };
       }
       TogglButton.newMessage(opts);
-      togglbutton.isStarted = !togglbutton.isStarted;
-      link.style.color = color;
-      if (params.buttonType !== 'minimal') {
-        link.innerHTML = linkText;
-      }
+      updateLink();
+
       return false;
     });
 
     // new button created - reset state
     this.isStarted = false;
-    return link;
+
+    // check if our link is the current time entry and set the state if it is
+    var opts = {
+      type: 'checkCurrentTimeEntry',
+      projectId: invokeIfFunction(params.projectId),
+      description: invokeIfFunction(params.description),
+      projectName: invokeIfFunction(params.projectName)
+    };
+    TogglButton.newMessage(opts);
+
+    return this.link;
   }
 };
