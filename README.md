@@ -25,17 +25,17 @@ Next to the Toggl button you'll see a select box containing all your projects fr
 
 ###Remember project###
 
-Toggl button is clever about your project selections and remembers your previous selection. Not globally but within the context that you're operating in. E.g. if you're working on different project on GitHub, Toggl button will remember different Toggl projects for each of your GitHub projects wher you're used the button before.
+Toggl button is clever about your project selections and remembers your previous selection. Not globally but within the context that you're operating in. E.g. if you're working on different projects on GitHub, Toggl button will remember different Toggl projects for each of your GitHub projects where you've used the button before.
 
-The method to determine the context depends on the platform where the button is used. So the context on Github is determined different form the context on YouTrack. But all of that is open source, so you can just go ahead and look into th *platform.user.js* files and see how it's been implemented.
+The method to determine the context depends on the platform where the button is used. So the context on Github is determined differently from the context on YouTrack. But all of that is open source, so you can just go ahead and look into th *[platform].user.js* files and see how it's been implemented.
 
 ###Caching data###
 
-When Toggl button connected to your Toggl account the first time, it collected all the data about your projects and stores that locally so that this data hasn't be to collected every time. This is saving a lot of bandwidth and makes the whole process much faster.
+When Toggl button connects to your Toggl account the first time, it collects all the data about your projects and stores that locally so that this data doesn't have to be collected every time. This is saving a lot of bandwidth and makes the whole process much faster.
 
-However, that could get you in a situation where your settings in your Toggl account (e.g. creating new projects or archiving existing ones) won't be reflected by the Toggle button. Don't worry, there are solutions for that too:
+However, that could get you in a situation where your settings in your Toggl account (e.g. new projects) won't be reflected by the Toggle button. Don't worry, there are solutions for that too:
 
-First of all, Toggl button is updating the cached data once every 6 hours in the background anyway. If you want to force that process to happen at any time you need it, just open the project select list and select the last item in the list names *Reload settings*. This will reload the current page and the data will be updated.
+First of all, Toggl button is updating the cached data once every 6 hours in the background anyway. If you want to force that process to happen at any time you need it, just open the project select list and select the last item in the list named *Reload settings*. This will reload the current page and the data will be updated.
 
 ###Keep status across page reloads###
 
@@ -43,7 +43,7 @@ When you start a time entry the button changes style to indicate that there is a
 
 ###Set billable flag for time entries (Toggl Pro accounts only)###
 
-If you have a Toggl Pro account, you can set a flag for each project if it's billable or not. This setting will be used by the Toggl button to set it equally to each time entry depending on the project to have selected for it.
+If you have a Toggl Pro account, you can set a flag for each project if it's billable or not. This setting will be used by the Toggl button to set it equally to each time entry depending on the project you have selected for it.
 
 ###Show message when authentication fails###
 
@@ -51,7 +51,7 @@ If the Toggl button can't access your Toggl account, it will inform you about it
 
 ##How to install##
 
-On Firefox, you have to have Greasemonkey installed first. If you haven't got it installed yet, just go to [Mozilla Greasemonkey][11] and folloew the instructions there.
+On Firefox, you have to have Greasemonkey installed first. If you haven't got it installed yet, just go to [Mozilla Greasemonkey][11] and follow the instructions there.
 
 If Greasemonkey is installed, you can either go to [User Scripts][1] or click on the following platforms to install their respective Toggl button script:
 * [Drupal][101]
@@ -77,7 +77,7 @@ Normally, there is no configuration required, these buttons just work out of the
 However, you can adjust their scope by individually defining the list of domains where the buttons should be included or excluded. Each of the buttons has built-in standards but they can be adjusted according to your own requirements:
 * Go to **Tools / Add-ons / User scripts**
 * For the script you want to configure, click on **Options**
-* In the **User Settings** tab you can input ans number of included and excluded domains
+* In the **User Settings** tab you can input any number of included and excluded domains
 * Click *OK* when you're done
 
 ##Useful links##
@@ -90,14 +90,14 @@ However, you can adjust their scope by individually defining the list of domains
 * [Toggl API][16]
 * [Official Toggl Button for Chrome][13]
 * Available Toggl Button for Greasemonkey Scripts:
-  ** [Drupal][201]
-  ** [GitHub][202]
-  ** [YouTrack][203]
+  * [Drupal][201]
+  * [GitHub][202]
+  * [YouTrack][203]
 
 ##Credits##
 
 ###Toggl###
-* [Best of bread online timetracking][10] is the basis for all of this and with their excellent product, neither a Toggl button would be possible nor required.
+* [Best of bread online timetracking][10] is the basis for all of this and without their excellent product, neither a Toggl button would be possible nor required.
 
 ##Contributing##
 
@@ -105,7 +105,7 @@ Want to contribute? Great! Just fork the project, make your changes and open a [
 
 ##Disclaimer##
 
-As the author of this set of script I do disclose that I am **in no way** associated with the company behind Toggl other than being a happy customer of their paid pro version.
+As the author of this set of scripts I do disclose that I am **in no way** associated with the company behind Toggl other than being a happy customer of their paid pro version.
 
 This also means, that the scripts here are in no way *official products* of Toggl and therefore not supported by Toggl or their associates.
 
