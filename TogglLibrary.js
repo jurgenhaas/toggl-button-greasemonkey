@@ -80,6 +80,7 @@ var TogglButton = {
         } else if (TogglButton.$api_token) {
           // Delete the API token and try again
           GM_setValue('_api_token', false);
+          TogglButton.$triedAlternative = false;
           TogglButton.fetchUser(TogglButton.$newApiUrl, callback);
         } else {
           var wrapper = document.createElement('div'),
