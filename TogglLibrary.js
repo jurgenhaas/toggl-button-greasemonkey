@@ -305,6 +305,7 @@ function createProjectSelect() {
   select.addEventListener('change', function (e) {
     if (select.value == 'RESET') {
       GM_setValue('_authenticated', 0);
+      window.location.reload();
       return;
     }
     togglbutton.projectId = select.value;
