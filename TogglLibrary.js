@@ -2,7 +2,7 @@
  * JavaScript Library for Toggl-Button for Greasemonkey
  *
  * (c) Jürgen Haas
- * Version: 1.0-beta.2
+ * Version: 1.0-beta.3
  *
  * @see https://github.com/jurgenhaas/toggl-button-greasemonkey
  *------------------------------------------------------------------------
