@@ -217,6 +217,8 @@ function updateLink() {
   if (!togglbutton.buttonTypeMinimal) {
     togglbutton.link.innerHTML = linkText;
   }
+
+  togglbutton.projectSelectElem.disabled = togglbutton.isStarted;
 }
 
 function invokeIfFunction(trial) {
@@ -232,6 +234,7 @@ var togglbutton = {
   buttonTypeMinimal: false,
   projectSelector: window.location.host,
   projectId: 0,
+  projectSelectElem: null,
   render: function (selector, opts, renderer) {
     if (TogglButton.newMessage({type: 'activate'})) {
       togglbutton.renderTo(selector, renderer);
@@ -304,8 +307,9 @@ var togglbutton = {
 function createProjectSelect() {
   var pid,
     wrapper = createTag('div', 'toggl-button-project-select'),
-    select = createTag('select'),
     resetOption = document.createElement('option');
+
+  togglbutton.projectSelectElem = createTag('select');
 
   for (pid in TogglButton.$projectMap) {
     var optgroup, project = TogglButton.$projectMap[pid];
@@ -313,7 +317,7 @@ function createProjectSelect() {
       optgroup = createTag('optgroup');
       optgroup.label = TogglButton.$clientMap[project.cid];
       TogglButton.$clientMap[project.cid] = optgroup;
-      select.appendChild(optgroup);
+      togglbutton.projectSelectElem.appendChild(optgroup);
     } else {
       optgroup = TogglButton.$clientMap[project.cid];
     }
@@ -324,21 +328,22 @@ function createProjectSelect() {
   }
   resetOption.setAttribute('value', 'RESET');
   resetOption.text = 'Reload settings';
-  select.appendChild(resetOption);
+  togglbutton.projectSelectElem.appendChild(resetOption);
 
-  select.addEventListener('change', function (e) {
-    if (select.value == 'RESET') {
+  togglbutton.projectSelectElem.addEventListener('change', function (e) {
+    if (togglbutton.projectSelectElem.value == 'RESET') {
       GM_setValue('_authenticated', 0);
       window.location.reload();
       return;
     }
-    togglbutton.projectId = select.value;
+    togglbutton.projectId = togglbutton.projectSelectElem.value;
     GM_setValue(togglbutton.projectSelector, togglbutton.projectId);
 
   });
 
-  select.value = togglbutton.projectId;
+  togglbutton.projectSelectElem.value = togglbutton.projectId;
+  togglbutton.projectSelectElem.disabled = togglbutton.isStarted;
 
-  wrapper.appendChild(select);
+  wrapper.appendChild(togglbutton.projectSelectElem);
   return wrapper;
 }
