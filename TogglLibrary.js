@@ -21,17 +21,23 @@ var TogglButton = {
   fetchUser: function (apiUrl, callback) {
     var timeNow = new Date().getTime(),
       timeAuth = GM_getValue('_authenticated', 0);
+    this.$api_token   = GM_getValue('_api_token', false);
     if ((timeNow - timeAuth) < (6*60*60*1000)) {
-      this.$api_token   = GM_getValue('_api_token', false);
       this.$default_wid = GM_getValue('_default_wid', 0);
       this.$clientMap   = JSON.parse(GM_getValue('_clientMap', {}));
       this.$projectMap  = JSON.parse(GM_getValue('_projectMap', {}));
       callback();
       return;
     }
+
+    var headers = {};
+    if (this.$api_token) {
+      headers['Authorization'] = "Basic " + btoa(TogglButton.$api_token + ':api_token');
+    }
     GM_xmlhttpRequest({
       method: "GET",
       url: apiUrl + "/me?with_related_data=true",
+      headers: headers,
       onload: function(result) {
         if (result.status === 200) {
           var resp = JSON.parse(result.responseText);
@@ -71,6 +77,10 @@ var TogglButton = {
           } else if (apiUrl === TogglButton.$newApiUrl) {
             TogglButton.fetchUser(TogglButton.$apiUrl, callback);
           }
+        } else if (TogglButton.$api_token) {
+          // Delete the API token and try again
+          GM_setValue('_api_token', false);
+          TogglButton.fetchUser(TogglButton.$newApiUrl, callback);
         } else {
           var wrapper = document.createElement('div'),
             content = createTag('div', 'content'),
