@@ -71,6 +71,17 @@ var TogglButton = {
           } else if (apiUrl === TogglButton.$newApiUrl) {
             TogglButton.fetchUser(TogglButton.$apiUrl, callback);
           }
+        } else {
+          var wrapper = document.createElement('div'),
+            content = createTag('div', 'content'),
+            link = createLink('login', 'a', 'https://new.toggl.com/', 'Login');
+          GM_addStyle(GM_getResourceText('togglStyle'));
+          link.target = '_blank';
+          wrapper.id = 'toggl-button-auth-failed';
+          content.appendChild(document.createTextNode('Authorization to your Toggl account failed!'));
+          content.appendChild(link);
+          wrapper.appendChild(content);
+          $('body').appendChild(wrapper);
         }
       }
     });
@@ -173,19 +184,20 @@ function createTag(name, className, innerHTML) {
   return tag;
 }
 
-function createLink(className, tagName, linkHref) {
+function createLink(className, tagName, linkHref, linkText) {
   var link;
 
   // Param defaults
   tagName  = tagName  || 'a';
   linkHref = linkHref || '#';
+  linkText = linkText || 'Start timer';
   link     = createTag(tagName, className);
 
   if (tagName === 'a') {
     link.href = linkHref;
   }
 
-  link.appendChild(document.createTextNode('Start timer'));
+  link.appendChild(document.createTextNode(linkText));
   return link;
 }
 

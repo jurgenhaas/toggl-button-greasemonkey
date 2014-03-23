@@ -43,3 +43,27 @@
   height: 12px;
   -webkit-appearance: none;
 }
+#toggl-button-auth-failed {
+  display: block;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  padding: 5px;
+  background-color: #ff0000;
+  color: #ffffff;
+  text-align: center;
+  font-weight: bold;
+}
+#toggl-button-auth-failed .content {
+  display: inline-block;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAABIklEQVR4AYWSu0qDURCEN80fkUCwSCPk8iJ5DF/BF1Aw1Ye2NhpLQSwFn8EiMd4qb6WNEDCkEdIETVLogDm7RyzMMvwzO8ue4eRY/GiyQ583ZsKleBNLlcgqh8z5yku6q342VuM+7LzUr6WxgrvMmHAuuJZX/hk7kIh6xoSsI9+MBotIo4QnmJAlld8ydl1OaVPhFBMq4lN39owrF9us87o89EV8y50bY+SrqxxHNvGqx3k3Zks6lP2UjT1iDNO+2DahRC+7kJ70JLYNPEGbjbgG8bbza6Pj4paCTcZiY30L6eR0jDofLi9oUGJNaIin7id1w9gXjavscyYsoiffDKMc/+nfkrfy/wt5kPfrvXX9oAhwFO8tqkWHASPmwkC8Fd430YaitSJltegAAAAASUVORK5CYII=) no-repeat left top;
+  padding-left: 35px;
+}
+#toggl-button-auth-failed .content a {
+  padding-left: 10px;
+  color: #ffffff;
+  text-decoration: underline;
+}
