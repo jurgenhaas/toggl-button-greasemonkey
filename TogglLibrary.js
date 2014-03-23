@@ -40,7 +40,8 @@ var TogglButton = {
                 TogglButton.$projectMap[project.id] = {
                   id: project.id,
                   cid: project.cid,
-                  name: project.name
+                  name: project.name,
+                  billable: project.billable
                 };
               }
             });
@@ -249,6 +250,7 @@ var togglbutton = {
         opts = {
           type: 'timeEntry',
           projectId: togglbutton.projectId,
+          billable: TogglButton.$projectMap[togglbutton.projectId].billable,
           description: invokeIfFunction(params.description),
           createdWith: 'GM TogglButton - ' + params.className
         };
