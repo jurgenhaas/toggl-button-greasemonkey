@@ -1,30 +1,43 @@
 var TogglButton = {
-  $user: null,
   $apiUrl: "https://www.toggl.com/api/v7",
   $newApiUrl: "https://new.toggl.com/api/v8",
-  $curEntryId: null,
   $triedAlternative: false,
+  $api_token: null,
+  $default_wid: null,
+  $clientMap: {},
+  $projectMap: {},
+  $curEntryId: null,
 
   fetchUser: function (apiUrl, callback) {
+    var timeNow = new Date().getTime(),
+      timeAuth = GM_getValue('_authenticated', 0);
+    if ((timeNow - timeAuth) < (6*60*60*1000)) {
+      this.$api_token   = GM_getValue('_api_token', false);
+      this.$default_wid = GM_getValue('_default_wid', 0);
+      this.$clientMap   = JSON.parse(GM_getValue('_clientMap', {}));
+      this.$projectMap  = JSON.parse(GM_getValue('_projectMap', {}));
+      callback();
+      return;
+    }
     GM_xmlhttpRequest({
       method: "GET",
       url: apiUrl + "/me?with_related_data=true",
       onload: function(result) {
         if (result.status === 200) {
-          var clientMap = {}, projectMap = {}, resp = JSON.parse(result.responseText);
-          clientMap[0] = 'No Client';
+          var resp = JSON.parse(result.responseText);
+          TogglButton.$clientMap[0] = 'No Client';
           if (resp.data.clients) {
             resp.data.clients.forEach(function (client) {
-              clientMap[client.id] = client.name;
+              TogglButton.$clientMap[client.id] = client.name;
             });
           }
           if (resp.data.projects) {
             resp.data.projects.forEach(function (project) {
-              if (clientMap[project.cid] == undefined) {
+              if (TogglButton.$clientMap[project.cid] == undefined) {
                 project.cid = 0;
               }
               if (project.active) {
-                projectMap[project.id] = {
+                TogglButton.$projectMap[project.id] = {
                   id: project.id,
                   cid: project.cid,
                   name: project.name
@@ -32,9 +45,13 @@ var TogglButton = {
               }
             });
           }
-          TogglButton.$user = resp.data;
-          TogglButton.$user.clientMap = clientMap;
-          TogglButton.$user.projectMap = projectMap;
+          GM_setValue('_authenticated', new Date().getTime());
+          GM_setValue('_api_token', resp.data.api_token);
+          GM_setValue('_default_wid', resp.data.default_wid);
+          GM_setValue('_clientMap', JSON.stringify(TogglButton.$clientMap));
+          GM_setValue('_projectMap', JSON.stringify(TogglButton.$projectMap));
+          TogglButton.$api_token = resp.data.api_token;
+          TogglButton.$default_wid = resp.data.default_wid;
           callback();
         } else if (!TogglButton.$triedAlternative) {
           TogglButton.$triedAlternative = true;
@@ -54,7 +71,7 @@ var TogglButton = {
         time_entry: {
           start: start.toISOString(),
           description: timeEntry.description,
-          wid: TogglButton.$user.default_wid,
+          wid: TogglButton.$default_wid,
           pid: timeEntry.projectId || null,
           billable: timeEntry.billable || false,
           duration: -(start.getTime() / 1000),
@@ -65,7 +82,7 @@ var TogglButton = {
       method: "POST",
       url: TogglButton.$newApiUrl + "/time_entries",
       headers: {
-        "Authorization": "Basic " + btoa(TogglButton.$user.api_token + ':api_token')
+        "Authorization": "Basic " + btoa(TogglButton.$api_token + ':api_token')
       },
       data: JSON.stringify(entry),
       onload: function(res) {
@@ -81,6 +98,9 @@ var TogglButton = {
     GM_xmlhttpRequest({
       method: "GET",
       url: TogglButton.$newApiUrl + "/time_entries/current",
+      headers: {
+        "Authorization": "Basic " + btoa(TogglButton.$api_token + ':api_token')
+      },
       onload: function(result) {
         if (result.status === 200) {
           var resp = JSON.parse(result.responseText);
@@ -106,7 +126,7 @@ var TogglButton = {
       method: "PUT",
       url: TogglButton.$newApiUrl + "/time_entries/" + entryId + "/stop",
       headers: {
-        "Authorization": "Basic " + btoa(TogglButton.$user.api_token + ':api_token')
+        "Authorization": "Basic " + btoa(TogglButton.$api_token + ':api_token')
       }
     });
   },
@@ -260,25 +280,33 @@ var togglbutton = {
 function createProjectSelect() {
   var pid,
     wrapper = createTag('div', 'toggl-button-project-select'),
-    select = createTag('select');
+    select = createTag('select'),
+    resetOption = document.createElement('option');
 
-  for (pid in TogglButton.$user.projectMap) {
-    var optgroup, project = TogglButton.$user.projectMap[pid];
-    if (typeof TogglButton.$user.clientMap[project.cid] === 'string') {
+  for (pid in TogglButton.$projectMap) {
+    var optgroup, project = TogglButton.$projectMap[pid];
+    if (typeof TogglButton.$clientMap[project.cid] === 'string') {
       optgroup = createTag('optgroup');
-      optgroup.label = TogglButton.$user.clientMap[project.cid];
-      TogglButton.$user.clientMap[project.cid] = optgroup;
+      optgroup.label = TogglButton.$clientMap[project.cid];
+      TogglButton.$clientMap[project.cid] = optgroup;
       select.appendChild(optgroup);
     } else {
-      optgroup = TogglButton.$user.clientMap[project.cid];
+      optgroup = TogglButton.$clientMap[project.cid];
     }
     var option = document.createElement('option');
     option.setAttribute('value', project.id);
     option.text = project.name;
     optgroup.appendChild(option);
   }
+  resetOption.setAttribute('value', 'RESET');
+  resetOption.text = 'Reload settings';
+  select.appendChild(resetOption);
 
   select.addEventListener('change', function (e) {
+    if (select.value == 'RESET') {
+      GM_setValue('_authenticated', 0);
+      return;
+    }
     togglbutton.projectId = select.value;
     GM_setValue(togglbutton.projectSelector, togglbutton.projectId);
 
