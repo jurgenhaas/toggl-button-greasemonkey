@@ -3,6 +3,7 @@ var TogglButton = {
   $apiUrl: "https://www.toggl.com/api/v7",
   $newApiUrl: "https://new.toggl.com/api/v8",
   $curEntryId: null,
+  $triedAlternative: false,
 
   fetchUser: function (apiUrl, callback) {
     GM_xmlhttpRequest({
@@ -33,8 +34,13 @@ var TogglButton = {
           TogglButton.$user.clientMap = clientMap;
           TogglButton.$user.projectMap = projectMap;
           callback();
-        } else if (apiUrl === TogglButton.$apiUrl) {
-          TogglButton.fetchUser(TogglButton.$newApiUrl);
+        } else if (!TogglButton.$triedAlternative) {
+          TogglButton.$triedAlternative = true;
+          if (apiUrl === TogglButton.$apiUrl) {
+            TogglButton.fetchUser(TogglButton.$newApiUrl, callback);
+          } else if (apiUrl === TogglButton.$newApiUrl) {
+            TogglButton.fetchUser(TogglButton.$apiUrl, callback);
+          }
         }
       }
     });
