@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button Drupal
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     0.90
+// @version     1.0-beta.2
 // @include     https://drupal.org/node/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
@@ -10,9 +10,9 @@
 // @grant       GM_setValue
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
-// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.js
+// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.2/TogglLibrary.js
 // @require     http://sizzlemctwizzle.com/423249.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/master/TogglLibrary.css
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.2/TogglLibrary.css
 // ==/UserScript==
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {

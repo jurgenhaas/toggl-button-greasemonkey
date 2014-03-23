@@ -1,3 +1,13 @@
+/*------------------------------------------------------------------------
+ * JavaScript Library for Toggl-Button for Greasemonkey
+ *
+ * (c) Jürgen Haas
+ * Version: 1.0-beta.2
+ *
+ * @see https://github.com/jurgenhaas/toggl-button-greasemonkey
+ *------------------------------------------------------------------------
+ */
+
 var TogglButton = {
   $apiUrl: "https://www.toggl.com/api/v7",
   $newApiUrl: "https://new.toggl.com/api/v8",
