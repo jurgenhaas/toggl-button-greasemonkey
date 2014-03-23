@@ -23,11 +23,13 @@ var TogglButton = {
               if (clientMap[project.cid] == undefined) {
                 project.cid = 0;
               }
-              projectMap[project.id] = {
-                id: project.id,
-                cid: project.cid,
-                name: project.name
-              };
+              if (project.active) {
+                projectMap[project.id] = {
+                  id: project.id,
+                  cid: project.cid,
+                  name: project.name
+                };
+              }
             });
           }
           TogglButton.$user = resp.data;
