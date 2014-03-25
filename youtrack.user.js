@@ -18,7 +18,7 @@
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
   togglbutton.render('.fsi-layout.container', {}, function (elem) {
-    var link, description, projectIds = [],
+    var description, projectIds = [],
       numElem = $('.issueId', elem),
       titleElem = $('.issue-summary', elem),
       projectElem = $('.fsi-properties .fsi-property .regCC a'),
@@ -36,11 +36,11 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       projectIds.push(linkElem.textContent.trim());
     }
 
-    link = togglbutton.createTimerLink({
+    togglbutton.createTimerLink({
       className: 'youtrack',
       description: description,
       projectIds: projectIds,
-      targetSelectors: {
+      targetSelectorsOff: {
         link: '.fsi-toolbar-content',
         projectSelect: '.fsi-toolbar-content'
       }

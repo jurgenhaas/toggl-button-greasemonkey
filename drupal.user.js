@@ -17,7 +17,7 @@
 
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
   togglbutton.render('body.node-type-project-issue', {}, function (elem) {
-    var link, description, projectIds = [],
+    var description, projectIds = [],
       href = document.getElementById('tabs').getElementsByTagName('a')[0].getAttribute('href'),
       id = href.match(/(?:node|comment\/reply)\/(\d+)/)[1],
       titleElem = $('#page-subtitle', elem),
@@ -32,11 +32,11 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       projectIds.push(projectElem.textContent.trim());
     }
 
-    link = togglbutton.createTimerLink({
+    togglbutton.createTimerLink({
       className: 'drupal',
       description: description,
       projectIds: projectIds,
-      targetSelectors: {
+      targetSelectorsOff: {
         link: '.submitted',
         projectSelect: '.submitted'
       }

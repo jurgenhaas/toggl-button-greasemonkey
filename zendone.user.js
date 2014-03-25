@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name        Toggl-Button GitHub
+// @name        Toggl-Button Zendone
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
 // @version     1.0-beta.3
-// @include     http*://github.com/*
+// @include     https://drupal.org/node/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
 // @grant       GM_getResourceText
@@ -11,38 +11,39 @@
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
 // @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.js
-// @require     http://sizzlemctwizzle.com/423257.js
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
+
+// @require     http://sizzlemctwizzle.com/423249.js
+
+/*
+Not working yet!
 TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
-  togglbutton.render('#js-discussion-header', {}, function (elem) {
+  togglbutton.render('.actions-table tr', {}, function (elem) {
+    console.log('ZENDONE Toggl');
     var description, projectIds = [],
-      numElem = $('.gh-header-number', elem),
-      titleElem = $('.js-issue-title', elem),
-      authorElem = $('.url.fn'),
-      projectElem = $('.js-current-repository');
+      titleElem = $('.colMain .action-title', elem),
+      projectElem = $('.field-name-field-project .field-items .field-item');
 
     description = titleElem.textContent.trim();
-    if (numElem !== null) {
-      description = numElem.textContent.trim() + " " + description;
+    if (id !== null) {
+      description = id + " " + description;
     }
 
-    if (authorElem !== null) {
-      projectIds.push(authorElem.textContent.trim());
-    }
     if (projectElem !== null) {
       projectIds.push(projectElem.textContent.trim());
     }
 
     togglbutton.createTimerLink({
-      className: 'github',
+      className: 'zendone',
       description: description,
       projectIds: projectIds,
-      targetSelectorsOff: {
-        link: '.gh-header-meta',
-        projectSelect: '.gh-header-meta'
+      targetSelectors: {
+        link: '.colMain .action-title',
+        projectSelect: '.colMain .action-title'
       }
     });
   });
 });
+*/

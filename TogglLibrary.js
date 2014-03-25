@@ -308,8 +308,25 @@ var togglbutton = {
     };
     TogglButton.newMessage(opts);
 
-    $(params.targetSelectors.link).appendChild(this.link);
-    $(params.targetSelectors.projectSelect).appendChild(createProjectSelect());
+    if (params.targetSelectors == undefined) {
+      console.log('a1');
+      var wrapper = document.createElement('div'),
+        content = createTag('div', 'content');
+      console.log('a2');
+      wrapper.id = 'toggl-button-wrapper';
+      console.log('a3');
+      content.appendChild(this.link);
+      content.appendChild(createProjectSelect());
+      wrapper.appendChild(content);
+      $('body').appendChild(wrapper);
+    } else {
+      if (params.targetSelectors.link != undefined) {
+        $(params.targetSelectors.link).appendChild(this.link);
+      }
+      if (params.targetSelectors.projectSelect != undefined) {
+        $(params.targetSelectors.projectSelect).appendChild(createProjectSelect());
+      }
+    }
 
     return this.link;
   }
