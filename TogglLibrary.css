@@ -26,6 +26,9 @@
 #toggl-button-wrapper .content .toggl-button-project-select {
   border: none;
 }
+#toggl-button-wrapper .hidden {
+  display: none !important;
+}
 .toggl-button {
   display: inline-block !important;
   line-height: 20px;

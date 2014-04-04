@@ -232,6 +232,32 @@ function updateLink() {
   togglbutton.projectSelectElem.disabled = togglbutton.isStarted;
 }
 
+function updateProjectId(id) {
+  id = id || 0;
+
+  if (id <= 0) {
+    togglbutton.projectId = null;
+  }
+  else {
+    togglbutton.projectId = id;
+  }
+
+  if (togglbutton.projectSelectElem != undefined) {
+    togglbutton.projectSelectElem.value = togglbutton.projectId || 0;
+    togglbutton.projectSelectElem.disabled = togglbutton.isStarted;
+  }
+
+  GM_setValue(togglbutton.projectSelector, togglbutton.projectId);
+  if (togglbutton.link != undefined) {
+    if (id == 0) {
+      togglbutton.link.classList.add('hidden');
+    }
+    else {
+      togglbutton.link.classList.remove('hidden');
+    }
+  }
+}
+
 function invokeIfFunction(trial) {
   if (trial instanceof Function) {
     return trial();
@@ -244,7 +270,7 @@ var togglbutton = {
   link: null,
   buttonTypeMinimal: false,
   projectSelector: window.location.host,
-  projectId: 0,
+  projectId: null,
   projectSelectElem: null,
   render: function (selector, opts, renderer) {
     if (TogglButton.newMessage({type: 'activate'})) {
@@ -266,7 +292,7 @@ var togglbutton = {
     if (params.projectIds !== undefined) {
       this.projectSelector += '-' + params.projectIds.join('-');
     }
-    this.projectId = GM_getValue(this.projectSelector, 0);
+    updateProjectId(GM_getValue(this.projectSelector, 0));
     GM_addStyle(GM_getResourceText('togglStyle'));
     this.link = createLink('toggl-button');
     this.link.classList.add(params.className);
@@ -335,12 +361,30 @@ var togglbutton = {
 function createProjectSelect() {
   var pid,
     wrapper = createTag('div', 'toggl-button-project-select'),
+    noneOptionAdded = false,
+    noneOption = document.createElement('option'),
+    emptyOption = document.createElement('option'),
     resetOption = document.createElement('option');
 
   togglbutton.projectSelectElem = createTag('select');
 
+  // None Option to indicate that a project should be selected first
+  if (togglbutton.projectId == undefined || togglbutton.projectId == 0) {
+    noneOption.setAttribute('value', '0');
+    noneOption.text = '- First select a project -';
+    togglbutton.projectSelectElem.appendChild(noneOption);
+    noneOptionAdded = true;
+  }
+
+  // Empty Option for tasks with no project
+  emptyOption.setAttribute('value', '-1');
+  emptyOption.text = 'No Project';
+  togglbutton.projectSelectElem.appendChild(emptyOption);
+
   for (pid in TogglButton.$projectMap) {
-    var optgroup, project = TogglButton.$projectMap[pid];
+    var optgroup, project;
+    //noinspection JSUnfilteredForInLoop
+    project = TogglButton.$projectMap[pid];
     if (typeof TogglButton.$clientMap[project.cid] === 'string') {
       optgroup = createTag('optgroup');
       optgroup.label = TogglButton.$clientMap[project.cid];
@@ -354,6 +398,8 @@ function createProjectSelect() {
     option.text = project.name;
     optgroup.appendChild(option);
   }
+
+  // Reset Option to reload settings and projects from Toggl
   resetOption.setAttribute('value', 'RESET');
   resetOption.text = 'Reload settings';
   togglbutton.projectSelectElem.appendChild(resetOption);
@@ -364,13 +410,17 @@ function createProjectSelect() {
       window.location.reload();
       return;
     }
-    togglbutton.projectId = togglbutton.projectSelectElem.value;
-    GM_setValue(togglbutton.projectSelector, togglbutton.projectId);
+
+    if (noneOptionAdded) {
+      togglbutton.projectSelectElem.removeChild(noneOption);
+      noneOptionAdded = false;
+    }
+
+    updateProjectId(togglbutton.projectSelectElem.value);
 
   });
 
-  togglbutton.projectSelectElem.value = togglbutton.projectId;
-  togglbutton.projectSelectElem.disabled = togglbutton.isStarted;
+  updateProjectId(togglbutton.projectId);
 
   wrapper.appendChild(togglbutton.projectSelectElem);
   return wrapper;
