@@ -233,7 +233,9 @@ function updateLink() {
 }
 
 function updateProjectId(id) {
-  id = id || 0;
+  id = id || GM_getValue(togglbutton.projectSelector, 0);
+
+  togglbutton.projectSelected = (id != 0);
 
   if (id <= 0) {
     togglbutton.projectId = null;
@@ -243,17 +245,18 @@ function updateProjectId(id) {
   }
 
   if (togglbutton.projectSelectElem != undefined) {
-    togglbutton.projectSelectElem.value = togglbutton.projectId || 0;
+    togglbutton.projectSelectElem.value = id;
     togglbutton.projectSelectElem.disabled = togglbutton.isStarted;
   }
 
-  GM_setValue(togglbutton.projectSelector, togglbutton.projectId);
+  GM_setValue(togglbutton.projectSelector, id);
+
   if (togglbutton.link != undefined) {
-    if (id == 0) {
-      togglbutton.link.classList.add('hidden');
+    if (togglbutton.projectSelected) {
+      togglbutton.link.classList.remove('hidden');
     }
     else {
-      togglbutton.link.classList.remove('hidden');
+      togglbutton.link.classList.add('hidden');
     }
   }
 }
@@ -271,6 +274,7 @@ var togglbutton = {
   buttonTypeMinimal: false,
   projectSelector: window.location.host,
   projectId: null,
+  projectSelected: false,
   projectSelectElem: null,
   render: function (selector, opts, renderer) {
     if (TogglButton.newMessage({type: 'activate'})) {
@@ -292,7 +296,7 @@ var togglbutton = {
     if (params.projectIds !== undefined) {
       this.projectSelector += '-' + params.projectIds.join('-');
     }
-    updateProjectId(GM_getValue(this.projectSelector, 0));
+    updateProjectId();
     GM_addStyle(GM_getResourceText('togglStyle'));
     this.link = createLink('toggl-button');
     this.link.classList.add(params.className);
@@ -309,10 +313,14 @@ var togglbutton = {
       if (togglbutton.isStarted) {
         opts = {type: 'stop'};
       } else {
+        var billable = false;
+        if (togglbutton.projectId != undefined && togglbutton.projectId > 0) {
+          billable = TogglButton.$projectMap[togglbutton.projectId].billable;
+        }
         opts = {
           type: 'timeEntry',
-          projectId: togglbutton.projectId,
-          billable: TogglButton.$projectMap[togglbutton.projectId].billable,
+          projectId: togglbutton.projectId || null,
+          billable: billable,
           description: invokeIfFunction(params.description),
           createdWith: 'GM TogglButton - ' + params.className
         };
@@ -335,12 +343,9 @@ var togglbutton = {
     TogglButton.newMessage(opts);
 
     if (params.targetSelectors == undefined) {
-      console.log('a1');
       var wrapper = document.createElement('div'),
         content = createTag('div', 'content');
-      console.log('a2');
       wrapper.id = 'toggl-button-wrapper';
-      console.log('a3');
       content.appendChild(this.link);
       content.appendChild(createProjectSelect());
       wrapper.appendChild(content);
@@ -369,7 +374,7 @@ function createProjectSelect() {
   togglbutton.projectSelectElem = createTag('select');
 
   // None Option to indicate that a project should be selected first
-  if (togglbutton.projectId == undefined || togglbutton.projectId == 0) {
+  if (!togglbutton.projectSelected) {
     noneOption.setAttribute('value', '0');
     noneOption.text = '- First select a project -';
     togglbutton.projectSelectElem.appendChild(noneOption);
