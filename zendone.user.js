@@ -19,8 +19,8 @@
 
 /*
 Not working yet!
-TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
-  togglbutton.render('.actions-table tr', {}, function (elem) {
+TogglButtonGM.fetchUser(TogglButtonGM.$newApiUrl, function() {
+  TogglButtonGM.render('.actions-table tr', {}, function (elem) {
     console.log('ZENDONE Toggl');
     var description, projectIds = [],
       titleElem = $('.colMain .action-title', elem),
@@ -35,7 +35,7 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       projectIds.push(projectElem.textContent.trim());
     }
 
-    togglbutton.createTimerLink({
+    TogglButtonGM.createTimerLink({
       className: 'zendone',
       description: description,
       projectIds: projectIds,

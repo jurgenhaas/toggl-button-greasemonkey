@@ -15,8 +15,8 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
-TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
-  togglbutton.render('#js-discussion-header', {}, function (elem) {
+TogglButtonGM.fetchUser(TogglButtonGM.$newApiUrl, function() {
+  TogglButtonGM.render('#js-discussion-header', {}, function (elem) {
     var description, projectIds = [],
       numElem = $('.gh-header-number', elem),
       titleElem = $('.js-issue-title', elem),
@@ -35,7 +35,7 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       projectIds.push(projectElem.textContent.trim());
     }
 
-    togglbutton.createTimerLink({
+    TogglButtonGM.createTimerLink({
       className: 'github',
       description: description,
       projectIds: projectIds,

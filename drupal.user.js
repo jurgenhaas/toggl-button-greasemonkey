@@ -15,8 +15,8 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
-TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
-  togglbutton.render('body.node-type-project-issue', {}, function (elem) {
+TogglButtonGM.fetchUser(TogglButtonGM.$newApiUrl, function() {
+  TogglButtonGM.render('body.node-type-project-issue', {}, function (elem) {
     var description, projectIds = [],
       href = document.getElementById('tabs').getElementsByTagName('a')[0].getAttribute('href'),
       id = href.match(/(?:node|comment\/reply)\/(\d+)/)[1],
@@ -32,7 +32,7 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       projectIds.push(projectElem.textContent.trim());
     }
 
-    togglbutton.createTimerLink({
+    TogglButtonGM.createTimerLink({
       className: 'drupal',
       description: description,
       projectIds: projectIds,

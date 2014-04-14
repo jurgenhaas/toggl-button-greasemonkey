@@ -16,8 +16,8 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
-TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
-  togglbutton.render('.fsi-layout.container', {}, function (elem) {
+TogglButtonGM.fetchUser(TogglButtonGM.$newApiUrl, function() {
+  TogglButtonGM.render('.fsi-layout.container', {}, function (elem) {
     var description, projectIds = [],
       numElem = $('.issueId', elem),
       titleElem = $('.issue-summary', elem),
@@ -36,7 +36,7 @@ TogglButton.fetchUser(TogglButton.$newApiUrl, function() {
       projectIds.push(linkElem.textContent.trim());
     }
 
-    togglbutton.createTimerLink({
+    TogglButtonGM.createTimerLink({
       className: 'youtrack',
       description: description,
       projectIds: projectIds,
