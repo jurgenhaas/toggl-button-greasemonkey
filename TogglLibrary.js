@@ -164,6 +164,47 @@ var TogglButton = {
     });
   },
 
+  checkCurrentLinkStatus: function () {
+    GM_xmlhttpRequest({
+      method: "GET",
+      url: TogglButton.$newApiUrl + "/time_entries/current",
+      headers: {
+        "Authorization": "Basic " + btoa(TogglButton.$api_token + ':api_token')
+      },
+      onload: function(result) {
+        if (result.status === 200) {
+          var updateRequired = false,
+            resp = JSON.parse(result.responseText);
+          if (resp.data == null) {
+            if (togglbutton.isStarted) {
+              togglbutton.isStarted = false;
+              updateRequired = true;
+            }
+          } else {
+            if (TogglButton.$curEntryId == resp.data.id) {
+              if (!togglbutton.isStarted) {
+                togglbutton.isStarted = true;
+                updateRequired = true;
+              }
+            } else {
+              if (togglbutton.isStarted) {
+                togglbutton.isStarted = false;
+                updateRequired = true;
+              }
+            }
+          }
+          if (updateRequired) {
+            if (!togglbutton.isStarted) {
+              TogglButton.$curEntryId = null;
+            }
+            togglbutton.isStarted = !togglbutton.isStarted;
+            updateLink();
+          }
+        }
+      }
+    });
+  },
+
   newMessage: function (request) {
     if (request.type === 'activate') {
       // TODO: Can we show something in the main window or the URL bar?
@@ -174,6 +215,8 @@ var TogglButton = {
       TogglButton.stopTimeEntry();
     } else if (request.type === 'checkCurrentTimeEntry') {
       TogglButton.checkCurrentTimeEntry(request);
+    } else if (request.type === 'checkCurrentLinkStatus') {
+      TogglButton.checkCurrentLinkStatus();
     }
   }
 
@@ -279,6 +322,13 @@ var togglbutton = {
   render: function (selector, opts, renderer) {
     if (TogglButton.newMessage({type: 'activate'})) {
       togglbutton.renderTo(selector, renderer);
+      window.addEventListener('focus', function (e) {
+        // check the status of the current link
+        var opts = {
+          type: 'checkCurrentLinkStatus'
+        };
+        TogglButton.newMessage(opts);
+      });
     }
   },
 
