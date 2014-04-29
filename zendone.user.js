@@ -19,7 +19,7 @@
 
 /*
 Not working yet!
-TogglButtonGM.fetchUser(TogglButtonGM.$newApiUrl, function() {
+TogglButtonGM.init(TogglButtonGM.$newApiUrl, function() {
   TogglButtonGM.render('.actions-table tr', {}, function (elem) {
     console.log('ZENDONE Toggl');
     var description, projectIds = [],

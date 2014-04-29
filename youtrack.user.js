@@ -16,34 +16,34 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
-TogglButtonGM.fetchUser(TogglButtonGM.$newApiUrl, function() {
-  TogglButtonGM.render('.fsi-layout.container', {}, function (elem) {
-    var description, projectIds = [],
-      numElem = $('.issueId', elem),
-      titleElem = $('.issue-summary', elem),
-      projectElem = $('.fsi-properties .fsi-property .regCC a'),
-      linkElem = $('.fsi-content .links-panel .links .link');
+var toggl = new TogglButtonGM();
 
-    description = titleElem.textContent.trim();
-    if (numElem !== null) {
-      description = numElem.textContent.trim() + " " + description;
-    }
+toggl.init('.fsi-layout.container', function (elem) {
+  var description, projectIds = [],
+    numElem = elem.querySelector('.issueId', elem),
+    titleElem = elem.querySelector('.issue-summary', elem),
+    projectElem = document.querySelector('.fsi-properties .fsi-property .regCC a'),
+    linkElem = document.querySelector('.fsi-content .links-panel .links .link');
 
-    if (projectElem !== null) {
-      projectIds.push(projectElem.textContent.trim());
-    }
-    if (linkElem !== null) {
-      projectIds.push(linkElem.textContent.trim());
-    }
+  description = titleElem.textContent.trim();
+  if (numElem !== null) {
+    description = numElem.textContent.trim() + " " + description;
+  }
 
-    TogglButtonGM.createTimerLink({
-      className: 'youtrack',
-      description: description,
-      projectIds: projectIds,
-      targetSelectorsOff: {
-        link: '.fsi-toolbar-content',
-        projectSelect: '.fsi-toolbar-content'
-      }
-    });
+  if (projectElem !== null) {
+    projectIds.push(projectElem.textContent.trim());
+  }
+  if (linkElem !== null) {
+    projectIds.push(linkElem.textContent.trim());
+  }
+
+  toggl.createTimerLink({
+    className: 'youtrack',
+    description: description,
+    projectIds: projectIds,
+    targetSelectorsOff: {
+      link: '.fsi-toolbar-content',
+      projectSelect: '.fsi-toolbar-content'
+    }
   });
 });

@@ -15,31 +15,31 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
-TogglButtonGM.fetchUser(TogglButtonGM.$newApiUrl, function() {
-  TogglButtonGM.render('body.node-type-project-issue', {}, function (elem) {
-    var description, projectIds = [],
-      href = document.getElementById('tabs').getElementsByTagName('a')[0].getAttribute('href'),
-      id = href.match(/(?:node|comment\/reply)\/(\d+)/)[1],
-      titleElem = $('#page-subtitle', elem),
-      projectElem = $('.field-name-field-project .field-items .field-item');
+var toggl = new TogglButtonGM();
 
-    description = titleElem.textContent.trim();
-    if (id !== null) {
-      description = id + " " + description;
+toggl.init('body.node-type-project-issue', function (elem) {
+  var description, projectIds = [],
+    href = document.getElementById('tabs').getElementsByTagName('a')[0].getAttribute('href'),
+    id = href.match(/(?:node|comment\/reply)\/(\d+)/)[1],
+    titleElem = elem.querySelector('#page-subtitle', elem),
+    projectElem = document.querySelector('.field-name-field-project .field-items .field-item');
+
+  description = titleElem.textContent.trim();
+  if (id !== null) {
+    description = id + " " + description;
+  }
+
+  if (projectElem !== null) {
+    projectIds.push(projectElem.textContent.trim());
+  }
+
+  toggl.createTimerLink({
+    className: 'drupal',
+    description: description,
+    projectIds: projectIds,
+    targetSelectorsOff: {
+      link: '.submitted',
+      projectSelect: '.submitted'
     }
-
-    if (projectElem !== null) {
-      projectIds.push(projectElem.textContent.trim());
-    }
-
-    TogglButtonGM.createTimerLink({
-      className: 'drupal',
-      description: description,
-      projectIds: projectIds,
-      targetSelectorsOff: {
-        link: '.submitted',
-        projectSelect: '.submitted'
-      }
-    });
   });
 });
