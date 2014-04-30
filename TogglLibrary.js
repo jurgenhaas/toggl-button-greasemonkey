@@ -108,18 +108,26 @@ function TogglButtonGM(selector, renderer) {
     var i, len, elems = document.querySelectorAll(selector);
     for (i = 0, len = elems.length; i < len; i += 1) {
       elems[i].classList.add('toggl');
-      $instances[i] = new TogglButtonGMInstance(renderer(elems[i]));
+      $instances[i] = new TogglButtonGMInstance(this, renderer(elems[i]));
     }
-    window.addEventListener('focus', function () {
+    window.addEventListener('focus', function() {
       for (i in $instances) {
         $instances[i].checkStatus();
       }
     });
   }
 
-  function TogglButtonGMInstance(params) {
+  this.checkStatusForAll = function() {
+    var i;
+    for (i in $instances) {
+      $instances[i].checkStatus();
+    }
+  };
+
+  function TogglButtonGMInstance(toggl, params) {
 
     var
+      $toggl = toggl,
       $curEntryId = null,
       $isStarted = false,
       $link = null,
@@ -173,6 +181,8 @@ function TogglButtonGM(selector, renderer) {
         }
         newMessage(opts);
         updateLink();
+
+        $toggl.checkStatusForAll();
 
         return false;
       });
