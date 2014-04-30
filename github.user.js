@@ -15,9 +15,7 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
-var toggl = new TogglButtonGM();
-
-toggl.init('#js-discussion-header', function (elem) {
+new TogglButtonGM('#js-discussion-header', function (elem) {
   var description, projectIds = [],
     numElem = elem.querySelector('.gh-header-number', elem),
     titleElem = elem.querySelector('.js-issue-title', elem),
@@ -36,13 +34,9 @@ toggl.init('#js-discussion-header', function (elem) {
     projectIds.push(projectElem.textContent.trim());
   }
 
-  toggl.createTimerLink({
+  return {
     className: 'github',
     description: description,
-    projectIds: projectIds,
-    targetSelectorsOff: {
-      link: '.gh-header-meta',
-      projectSelect: '.gh-header-meta'
-    }
-  });
+    projectIds: projectIds
+  };
 });

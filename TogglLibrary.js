@@ -8,7 +8,8 @@
  *------------------------------------------------------------------------
  */
 
-function TogglButtonGM() {
+function TogglButtonGM(selector, renderer) {
+
   var
     $activeApiUrl = null,
     $apiUrl = "https://www.toggl.com/api/v7",
@@ -18,19 +19,13 @@ function TogglButtonGM() {
     $default_wid = null,
     $clientMap = {},
     $projectMap = {},
-    $curEntryId = null,
-    $isStarted = false,
-    $link = null,
-    $buttonTypeMinimal = false,
-    $projectSelector = window.location.host,
-    $projectId = null,
-    $projectSelected = false,
-    $projectSelectElem = null;
+    $instances = {};
 
-  this.init = function(selector, renderer, apiUrl) {
+  init(selector, renderer);
+
+  function init(selector, renderer, apiUrl) {
     var timeNow = new Date().getTime(),
-      timeAuth = GM_getValue('_authenticated', 0),
-      self = this;
+      timeAuth = GM_getValue('_authenticated', 0);
     apiUrl = apiUrl || $newApiUrl;
     $api_token = GM_getValue('_api_token', false);
     if ($api_token && (timeNow - timeAuth) < (6*60*60*1000)) {
@@ -84,15 +79,15 @@ function TogglButtonGM() {
         } else if (!$triedAlternative) {
           $triedAlternative = true;
           if (apiUrl === $apiUrl) {
-            self.init(selector, renderer, $newApiUrl);
+            init(selector, renderer, $newApiUrl);
           } else if (apiUrl === $newApiUrl) {
-            self.init(selector, renderer, $apiUrl);
+            init(selector, renderer, $apiUrl);
           }
         } else if ($api_token) {
           // Delete the API token and try again
           GM_setValue('_api_token', false);
           $triedAlternative = false;
-          self.init(selector, renderer, $newApiUrl);
+          init(selector, renderer, $newApiUrl);
         } else {
           var wrapper = document.createElement('div'),
             content = createTag('div', 'content'),
@@ -107,364 +102,381 @@ function TogglButtonGM() {
         }
       }
     });
-  };
-
-  this.createTimerLink = function(params) {
-    if (params.projectIds !== undefined) {
-      $projectSelector += '-' + params.projectIds.join('-');
-    }
-    updateProjectId();
-    GM_addStyle(GM_getResourceText('togglStyle'));
-    $link = createLink('toggl-button');
-    $link.classList.add(params.className);
-
-    if (params.buttonType === 'minimal') {
-      $link.classList.add('min');
-      $link.removeChild($link.firstChild);
-      $buttonTypeMinimal = true;
-    }
-
-    $link.addEventListener('click', function (e) {
-      var opts = '';
-      e.preventDefault();
-      if ($isStarted) {
-        opts = {type: 'stop'};
-      } else {
-        var billable = false;
-        if ($projectId != undefined && $projectId > 0) {
-          billable = $projectMap[$projectId].billable;
-        }
-        opts = {
-          type: 'timeEntry',
-          $projectId: $projectId || null,
-          billable: billable,
-          description: invokeIfFunction(params.description),
-          createdWith: 'TogglButtonGM - ' + params.className
-        };
-      }
-      newMessage(opts);
-      updateLink();
-
-      return false;
-    });
-
-    // new button created - reset state
-    $isStarted = false;
-
-    // check if our link is the current time entry and set the state if it is
-    newMessage({
-      type: 'checkCurrentTimeEntry',
-      $projectId: $projectId,
-      description: invokeIfFunction(params.description)
-    });
-
-    if (params.targetSelectors == undefined) {
-      var wrapper = document.createElement('div'),
-        content = createTag('div', 'content');
-      wrapper.id = 'toggl-button-wrapper';
-      content.appendChild($link);
-      content.appendChild(createProjectSelect());
-      wrapper.appendChild(content);
-      document.querySelector('body').appendChild(wrapper);
-    } else {
-      if (params.targetSelectors.link != undefined) {
-        document.querySelector(params.targetSelectors.link).appendChild($link);
-      }
-      if (params.targetSelectors.projectSelect != undefined) {
-        document.querySelector(params.targetSelectors.projectSelect).appendChild(createProjectSelect());
-      }
-    }
-
-    return $link;
-  };
+  }
 
   function render(selector, renderer) {
-    if (newMessage({type: 'activate'})) {
-      var i, len, elems = document.querySelectorAll(selector);
-      for (i = 0, len = elems.length; i < len; i += 1) {
-        elems[i].classList.add('toggl');
+    var i, len, elems = document.querySelectorAll(selector);
+    for (i = 0, len = elems.length; i < len; i += 1) {
+      elems[i].classList.add('toggl');
+      $instances[i] = new TogglButtonGMInstance(renderer(elems[i]));
+    }
+    window.addEventListener('focus', function () {
+      for (i in $instances) {
+        $instances[i].checkStatus();
       }
-      for (i = 0, len = elems.length; i < len; i += 1) {
-        renderer(elems[i]);
+    });
+  }
+
+  function TogglButtonGMInstance(params) {
+
+    var
+      $curEntryId = null,
+      $isStarted = false,
+      $link = null,
+      $buttonTypeMinimal = false,
+      $projectSelector = window.location.host,
+      $projectId = null,
+      $projectSelected = false,
+      $projectSelectElem = null;
+
+    createTimerLink(params);
+
+    this.checkStatus = function() {
+      // check the status of the current link
+      newMessage({
+        type: 'checkCurrentLinkStatus'
+      });
+    };
+
+    function createTimerLink(params) {
+      if (params.projectIds !== undefined) {
+        $projectSelector += '-' + params.projectIds.join('-');
       }
-      window.addEventListener('focus', function () {
-        // check the status of the current link
-        newMessage({
-          type: 'checkCurrentLinkStatus'
-        });
+      updateProjectId();
+      GM_addStyle(GM_getResourceText('togglStyle'));
+      $link = createLink('toggl-button');
+      $link.classList.add(params.className);
+
+      if (params.buttonType === 'minimal') {
+        $link.classList.add('min');
+        $link.removeChild($link.firstChild);
+        $buttonTypeMinimal = true;
+      }
+
+      $link.addEventListener('click', function (e) {
+        var opts = '';
+        e.preventDefault();
+        if ($isStarted) {
+          opts = {type: 'stop'};
+        } else {
+          var billable = false;
+          if ($projectId != undefined && $projectId > 0) {
+            billable = $projectMap[$projectId].billable;
+          }
+          opts = {
+            type: 'timeEntry',
+            $projectId: $projectId || null,
+            billable: billable,
+            description: invokeIfFunction(params.description),
+            createdWith: 'TogglButtonGM - ' + params.className
+          };
+        }
+        newMessage(opts);
+        updateLink();
+
+        return false;
+      });
+
+      // new button created - reset state
+      $isStarted = false;
+
+      // check if our link is the current time entry and set the state if it is
+      newMessage({
+        type: 'checkCurrentTimeEntry',
+        $projectId: $projectId,
+        description: invokeIfFunction(params.description)
+      });
+
+      if (params.targetSelectors == undefined) {
+        var wrapper = document.createElement('div'),
+          content = createTag('div', 'content');
+        wrapper.id = 'toggl-button-wrapper';
+        content.appendChild($link);
+        content.appendChild(createProjectSelect());
+        wrapper.appendChild(content);
+        document.querySelector('body').appendChild(wrapper);
+      } else {
+        var elem = params.targetSelectors.context || document;
+        if (params.targetSelectors.link != undefined) {
+          elem.querySelector(params.targetSelectors.link).appendChild($link);
+        }
+        if (params.targetSelectors.projectSelect != undefined) {
+          elem.querySelector(params.targetSelectors.projectSelect).appendChild(createProjectSelect());
+        }
+      }
+
+      return $link;
+    }
+
+    function createTimeEntry(timeEntry) {
+      var start = new Date();
+      GM_xmlhttpRequest({
+        method: "POST",
+        url: $activeApiUrl + "/time_entries",
+        headers: {
+          "Authorization": "Basic " + btoa($api_token + ':api_token')
+        },
+        data: JSON.stringify({
+          time_entry: {
+            start: start.toISOString(),
+            description: timeEntry.description,
+            wid: $default_wid,
+            pid: timeEntry.$projectId || null,
+            billable: timeEntry.billable || false,
+            duration: -(start.getTime() / 1000),
+            created_with: timeEntry.createdWith || 'TogglButtonGM'
+          }
+        }),
+        onload: function (res) {
+          var responseData, entryId;
+          responseData = JSON.parse(res.responseText);
+          entryId = responseData && responseData.data && responseData.data.id;
+          $curEntryId = entryId;
+        }
       });
     }
-  }
 
-  function createTimeEntry(timeEntry) {
-    var start = new Date();
-    GM_xmlhttpRequest({
-      method: "POST",
-      url: $activeApiUrl + "/time_entries",
-      headers: {
-        "Authorization": "Basic " + btoa($api_token + ':api_token')
-      },
-      data: JSON.stringify({
-        time_entry: {
-          start: start.toISOString(),
-          description: timeEntry.description,
-          wid: $default_wid,
-          pid: timeEntry.$projectId || null,
-          billable: timeEntry.billable || false,
-          duration: -(start.getTime() / 1000),
-          created_with: timeEntry.createdWith || 'TogglButtonGM'
-        }
-      }),
-      onload: function(res) {
-        var responseData, entryId;
-        responseData = JSON.parse(res.responseText);
-        entryId = responseData && responseData.data && responseData.data.id;
-        $curEntryId = entryId;
-      }
-    });
-  }
-
-  function checkCurrentTimeEntry(params) {
-    GM_xmlhttpRequest({
-      method: "GET",
-      url: $activeApiUrl + "/time_entries/current",
-      headers: {
-        "Authorization": "Basic " + btoa($api_token + ':api_token')
-      },
-      onload: function(result) {
-        if (result.status === 200) {
-          var resp = JSON.parse(result.responseText);
-          if (resp == null) {
-            return;
-          }
-          if (params.description === resp.data.description) {
-            $curEntryId = resp.data.id;
-            $isStarted = false;
-            updateLink();
-          }
-        }
-      }
-    });
-  }
-
-  function stopTimeEntry(entryId) {
-    entryId = entryId || $curEntryId;
-    if (!entryId) {
-      return;
-    }
-    GM_xmlhttpRequest({
-      method: "PUT",
-      url: $activeApiUrl + "/time_entries/" + entryId + "/stop",
-      headers: {
-        "Authorization": "Basic " + btoa($api_token + ':api_token')
-      }
-    });
-  }
-
-  function checkCurrentLinkStatus() {
-    GM_xmlhttpRequest({
-      method: "GET",
-      url: $activeApiUrl + "/time_entries/current",
-      headers: {
-        "Authorization": "Basic " + btoa($api_token + ':api_token')
-      },
-      onload: function(result) {
-        if (result.status === 200) {
-          var updateRequired = false,
-            resp = JSON.parse(result.responseText);
-          if (resp.data == null) {
-            if ($isStarted) {
-              $isStarted = false;
-              updateRequired = true;
+    function checkCurrentTimeEntry(params) {
+      GM_xmlhttpRequest({
+        method: "GET",
+        url: $activeApiUrl + "/time_entries/current",
+        headers: {
+          "Authorization": "Basic " + btoa($api_token + ':api_token')
+        },
+        onload: function (result) {
+          if (result.status === 200) {
+            var resp = JSON.parse(result.responseText);
+            if (resp == null) {
+              return;
             }
-          } else {
-            if ($curEntryId == resp.data.id) {
-              if (!$isStarted) {
-                $isStarted = true;
-                updateRequired = true;
-              }
-            } else {
+            if (params.description === resp.data.description) {
+              $curEntryId = resp.data.id;
+              $isStarted = false;
+              updateLink();
+            }
+          }
+        }
+      });
+    }
+
+    function stopTimeEntry(entryId) {
+      entryId = entryId || $curEntryId;
+      if (!entryId) {
+        return;
+      }
+      GM_xmlhttpRequest({
+        method: "PUT",
+        url: $activeApiUrl + "/time_entries/" + entryId + "/stop",
+        headers: {
+          "Authorization": "Basic " + btoa($api_token + ':api_token')
+        }
+      });
+    }
+
+    function checkCurrentLinkStatus() {
+      GM_xmlhttpRequest({
+        method: "GET",
+        url: $activeApiUrl + "/time_entries/current",
+        headers: {
+          "Authorization": "Basic " + btoa($api_token + ':api_token')
+        },
+        onload: function (result) {
+          if (result.status === 200) {
+            var updateRequired = false,
+              resp = JSON.parse(result.responseText);
+            if (resp.data == null) {
               if ($isStarted) {
                 $isStarted = false;
                 updateRequired = true;
               }
+            } else {
+              if ($curEntryId == resp.data.id) {
+                if (!$isStarted) {
+                  $isStarted = true;
+                  updateRequired = true;
+                }
+              } else {
+                if ($isStarted) {
+                  $isStarted = false;
+                  updateRequired = true;
+                }
+              }
             }
-          }
-          if (updateRequired) {
-            if (!$isStarted) {
-              $curEntryId = null;
+            if (updateRequired) {
+              if (!$isStarted) {
+                $curEntryId = null;
+              }
+              $isStarted = !$isStarted;
+              updateLink();
             }
-            $isStarted = !$isStarted;
-            updateLink();
           }
         }
+      });
+    }
+
+    function newMessage(request) {
+      if (request.type === 'timeEntry') {
+        createTimeEntry(request);
+      } else if (request.type === 'stop') {
+        stopTimeEntry();
+      } else if (request.type === 'checkCurrentTimeEntry') {
+        checkCurrentTimeEntry(request);
+      } else if (request.type === 'checkCurrentLinkStatus') {
+        checkCurrentLinkStatus();
       }
-    });
-  }
-
-  function newMessage(request) {
-    if (request.type === 'activate') {
-      return ($api_token !== null && $api_token);
-    } else if (request.type === 'timeEntry') {
-      createTimeEntry(request);
-    } else if (request.type === 'stop') {
-      stopTimeEntry();
-    } else if (request.type === 'checkCurrentTimeEntry') {
-      checkCurrentTimeEntry(request);
-    } else if (request.type === 'checkCurrentLinkStatus') {
-      checkCurrentLinkStatus();
-    }
-  }
-
-  function createTag(name, className, innerHTML) {
-    var tag = document.createElement(name);
-    tag.className = className;
-
-    if (innerHTML) {
-      tag.innerHTML = innerHTML;
     }
 
-    return tag;
-  }
+    function createTag(name, className, innerHTML) {
+      var tag = document.createElement(name);
+      tag.className = className;
 
-  function createLink(className, tagName, linkHref, linkText) {
-    // Param defaults
-    tagName  = tagName  || 'a';
-    linkHref = linkHref || '#';
-    linkText = linkText || 'Start timer';
+      if (innerHTML) {
+        tag.innerHTML = innerHTML;
+      }
 
-    var link     = createTag(tagName, className);
-
-    if (tagName === 'a') {
-      link.setAttribute('href', linkHref);
+      return tag;
     }
 
-    link.appendChild(document.createTextNode(linkText));
-    return link;
-  }
+    function createLink(className, tagName, linkHref, linkText) {
+      // Param defaults
+      tagName = tagName || 'a';
+      linkHref = linkHref || '#';
+      linkText = linkText || 'Start timer';
 
-  function updateLink() {
-    var linkText, color = '';
+      var link = createTag(tagName, className);
 
-    if ($isStarted) {
-      $link.classList.remove('active');
-      linkText = 'Start timer';
-    } else {
-      $link.classList.add('active');
-      color = '#1ab351';
-      linkText = 'Stop timer';
-    }
-    $isStarted = !$isStarted;
-    $link.style.color = color;
-    if (!$buttonTypeMinimal) {
-      $link.innerHTML = linkText;
+      if (tagName === 'a') {
+        link.setAttribute('href', linkHref);
+      }
+
+      link.appendChild(document.createTextNode(linkText));
+      return link;
     }
 
-    $projectSelectElem.disabled = $isStarted;
-  }
+    function updateLink() {
+      var linkText, color = '';
 
-  function updateProjectId(id) {
-    id = id || GM_getValue($projectSelector, 0);
+      if ($isStarted) {
+        $link.classList.remove('active');
+        linkText = 'Start timer';
+      } else {
+        $link.classList.add('active');
+        color = '#1ab351';
+        linkText = 'Stop timer';
+      }
+      $isStarted = !$isStarted;
 
-    $projectSelected = (id != 0);
+      $link.setAttribute('style', 'color:'+color+';');
+      if (!$buttonTypeMinimal) {
+        $link.innerHTML = linkText;
+      }
 
-    if (id <= 0) {
-      $projectId = null;
-    }
-    else {
-      $projectId = id;
-    }
-
-    if ($projectSelectElem != undefined) {
-      $projectSelectElem.value = id;
       $projectSelectElem.disabled = $isStarted;
     }
 
-    GM_setValue($projectSelector, id);
+    function updateProjectId(id) {
+      id = id || GM_getValue($projectSelector, 0);
 
-    if ($link != undefined) {
-      if ($projectSelected) {
-        $link.classList.remove('hidden');
+      $projectSelected = (id != 0);
+
+      if (id <= 0) {
+        $projectId = null;
       }
       else {
-        $link.classList.add('hidden');
-      }
-    }
-  }
-
-  function invokeIfFunction(trial) {
-    if (trial instanceof Function) {
-      return trial();
-    }
-    return trial;
-  }
-
-  function createProjectSelect() {
-    var pid,
-      wrapper = createTag('div', 'toggl-button-project-select'),
-      noneOptionAdded = false,
-      noneOption = document.createElement('option'),
-      emptyOption = document.createElement('option'),
-      resetOption = document.createElement('option');
-
-    $projectSelectElem = createTag('select');
-
-    // None Option to indicate that a project should be selected first
-    if (!$projectSelected) {
-      noneOption.setAttribute('value', '0');
-      noneOption.text = '- First select a project -';
-      $projectSelectElem.appendChild(noneOption);
-      noneOptionAdded = true;
-    }
-
-    // Empty Option for tasks with no project
-    emptyOption.setAttribute('value', '-1');
-    emptyOption.text = 'No Project';
-    $projectSelectElem.appendChild(emptyOption);
-
-    for (pid in $projectMap) {
-      var optgroup, project;
-      //noinspection JSUnfilteredForInLoop
-      project = $projectMap[pid];
-      if (typeof $clientMap[project.cid] === 'string') {
-        optgroup = createTag('optgroup');
-        optgroup.label = $clientMap[project.cid];
-        $clientMap[project.cid] = optgroup;
-        $projectSelectElem.appendChild(optgroup);
-      } else {
-        optgroup = $clientMap[project.cid];
-      }
-      var option = document.createElement('option');
-      option.setAttribute('value', project.id);
-      option.text = project.name;
-      optgroup.appendChild(option);
-    }
-
-    // Reset Option to reload settings and projects from Toggl
-    resetOption.setAttribute('value', 'RESET');
-    resetOption.text = 'Reload settings';
-    $projectSelectElem.appendChild(resetOption);
-
-    $projectSelectElem.addEventListener('change', function () {
-      if ($projectSelectElem.value == 'RESET') {
-        GM_setValue('_authenticated', 0);
-        window.location.reload();
-        return;
+        $projectId = id;
       }
 
-      if (noneOptionAdded) {
-        $projectSelectElem.removeChild(noneOption);
-        noneOptionAdded = false;
+      if ($projectSelectElem != undefined) {
+        $projectSelectElem.value = id;
+        $projectSelectElem.disabled = $isStarted;
       }
 
-      updateProjectId($projectSelectElem.value);
+      GM_setValue($projectSelector, id);
 
-    });
+      if ($link != undefined) {
+        if ($projectSelected) {
+          $link.classList.remove('hidden');
+        }
+        else {
+          $link.classList.add('hidden');
+        }
+      }
+    }
 
-    updateProjectId($projectId);
+    function invokeIfFunction(trial) {
+      if (trial instanceof Function) {
+        return trial();
+      }
+      return trial;
+    }
 
-    wrapper.appendChild($projectSelectElem);
-    return wrapper;
+    function createProjectSelect() {
+      var pid,
+        wrapper = createTag('div', 'toggl-button-project-select'),
+        noneOptionAdded = false,
+        noneOption = document.createElement('option'),
+        emptyOption = document.createElement('option'),
+        resetOption = document.createElement('option');
+
+      $projectSelectElem = createTag('select');
+
+      // None Option to indicate that a project should be selected first
+      if (!$projectSelected) {
+        noneOption.setAttribute('value', '0');
+        noneOption.text = '- First select a project -';
+        $projectSelectElem.appendChild(noneOption);
+        noneOptionAdded = true;
+      }
+
+      // Empty Option for tasks with no project
+      emptyOption.setAttribute('value', '-1');
+      emptyOption.text = 'No Project';
+      $projectSelectElem.appendChild(emptyOption);
+
+      var optgroup, project, clientMap = [];
+      for (pid in $projectMap) {
+        //noinspection JSUnfilteredForInLoop
+        project = $projectMap[pid];
+        if (clientMap[project.cid] == undefined) {
+          optgroup = createTag('optgroup');
+          optgroup.label = $clientMap[project.cid];
+          clientMap[project.cid] = optgroup;
+          $projectSelectElem.appendChild(optgroup);
+        } else {
+          optgroup = clientMap[project.cid];
+        }
+        var option = document.createElement('option');
+        option.setAttribute('value', project.id);
+        option.text = project.name;
+        optgroup.appendChild(option);
+      }
+
+      // Reset Option to reload settings and projects from Toggl
+      resetOption.setAttribute('value', 'RESET');
+      resetOption.text = 'Reload settings';
+      $projectSelectElem.appendChild(resetOption);
+
+      $projectSelectElem.addEventListener('change', function () {
+        if ($projectSelectElem.value == 'RESET') {
+          GM_setValue('_authenticated', 0);
+          window.location.reload();
+          return;
+        }
+
+        if (noneOptionAdded) {
+          $projectSelectElem.removeChild(noneOption);
+          noneOptionAdded = false;
+        }
+
+        updateProjectId($projectSelectElem.value);
+
+      });
+
+      updateProjectId($projectId);
+
+      wrapper.appendChild($projectSelectElem);
+      return wrapper;
+    }
   }
 
 }

@@ -16,9 +16,7 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-beta.3/TogglLibrary.css
 // ==/UserScript==
 
-var toggl = new TogglButtonGM();
-
-toggl.init('.fsi-layout.container', function (elem) {
+new TogglButtonGM('.fsi-layout.container', function (elem) {
   var description, projectIds = [],
     numElem = elem.querySelector('.issueId', elem),
     titleElem = elem.querySelector('.issue-summary', elem),
@@ -37,13 +35,9 @@ toggl.init('.fsi-layout.container', function (elem) {
     projectIds.push(linkElem.textContent.trim());
   }
 
-  toggl.createTimerLink({
+  return {
     className: 'youtrack',
     description: description,
-    projectIds: projectIds,
-    targetSelectorsOff: {
-      link: '.fsi-toolbar-content',
-      projectSelect: '.fsi-toolbar-content'
-    }
-  });
+    projectIds: projectIds
+  };
 });
