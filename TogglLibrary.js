@@ -108,26 +108,34 @@ function TogglButtonGM(selector, renderer) {
     var i, len, elems = document.querySelectorAll(selector);
     for (i = 0, len = elems.length; i < len; i += 1) {
       elems[i].classList.add('toggl');
-      $instances[i] = new TogglButtonGMInstance(this, renderer(elems[i]));
+      $instances[i] = new TogglButtonGMInstance(renderer(elems[i]));
     }
+    document.addEventListener('TogglButtonGMUpdateStatus', function() {
+      GM_xmlhttpRequest({
+        method: "GET",
+        url: $activeApiUrl + "/time_entries/current",
+        headers: {
+          "Authorization": "Basic " + btoa($api_token + ':api_token')
+        },
+        onload: function (result) {
+          if (result.status === 200) {
+            var resp = JSON.parse(result.responseText),
+              data = resp.data || false;
+            for (i in $instances) {
+              $instances[i].checkCurrentLinkStatus(data);
+            }
+          }
+        }
+      });
+    });
     window.addEventListener('focus', function() {
-      for (i in $instances) {
-        $instances[i].checkStatus();
-      }
+      document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
     });
   }
 
-  this.checkStatusForAll = function() {
-    var i;
-    for (i in $instances) {
-      $instances[i].checkStatus();
-    }
-  };
-
-  function TogglButtonGMInstance(toggl, params) {
+  function TogglButtonGMInstance(params) {
 
     var
-      $toggl = toggl,
       $curEntryId = null,
       $isStarted = false,
       $link = null,
@@ -137,14 +145,36 @@ function TogglButtonGM(selector, renderer) {
       $projectSelected = false,
       $projectSelectElem = null;
 
-    createTimerLink(params);
-
-    this.checkStatus = function() {
-      // check the status of the current link
-      newMessage({
-        type: 'checkCurrentLinkStatus'
-      });
+    this.checkCurrentLinkStatus = function (data) {
+      var updateRequired = false;
+      if (!data) {
+        if ($isStarted) {
+          $isStarted = false;
+          updateRequired = true;
+        }
+      } else {
+        if ($curEntryId == data.id) {
+          if (!$isStarted) {
+            $isStarted = true;
+            updateRequired = true;
+          }
+        } else {
+          if ($isStarted) {
+            $isStarted = false;
+            updateRequired = true;
+          }
+        }
+      }
+      if (updateRequired) {
+        if (!$isStarted) {
+          $curEntryId = null;
+        }
+        $isStarted = !$isStarted;
+        updateLink();
+      }
     };
+
+    createTimerLink(params);
 
     function createTimerLink(params) {
       if (params.projectIds !== undefined) {
@@ -182,7 +212,7 @@ function TogglButtonGM(selector, renderer) {
         newMessage(opts);
         updateLink();
 
-        $toggl.checkStatusForAll();
+        document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
 
         return false;
       });
@@ -283,47 +313,6 @@ function TogglButtonGM(selector, renderer) {
       });
     }
 
-    function checkCurrentLinkStatus() {
-      GM_xmlhttpRequest({
-        method: "GET",
-        url: $activeApiUrl + "/time_entries/current",
-        headers: {
-          "Authorization": "Basic " + btoa($api_token + ':api_token')
-        },
-        onload: function (result) {
-          if (result.status === 200) {
-            var updateRequired = false,
-              resp = JSON.parse(result.responseText);
-            if (resp.data == null) {
-              if ($isStarted) {
-                $isStarted = false;
-                updateRequired = true;
-              }
-            } else {
-              if ($curEntryId == resp.data.id) {
-                if (!$isStarted) {
-                  $isStarted = true;
-                  updateRequired = true;
-                }
-              } else {
-                if ($isStarted) {
-                  $isStarted = false;
-                  updateRequired = true;
-                }
-              }
-            }
-            if (updateRequired) {
-              if (!$isStarted) {
-                $curEntryId = null;
-              }
-              $isStarted = !$isStarted;
-              updateLink();
-            }
-          }
-        }
-      });
-    }
-
     function newMessage(request) {
       if (request.type === 'timeEntry') {
         createTimeEntry(request);
@@ -331,8 +320,6 @@ function TogglButtonGM(selector, renderer) {
         stopTimeEntry();
       } else if (request.type === 'checkCurrentTimeEntry') {
         checkCurrentTimeEntry(request);
-      } else if (request.type === 'checkCurrentLinkStatus') {
-        checkCurrentLinkStatus();
       }
     }
 
