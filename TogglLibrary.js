@@ -146,31 +146,30 @@ function TogglButtonGM(selector, renderer) {
       $projectSelectElem = null;
 
     this.checkCurrentLinkStatus = function (data) {
-      var updateRequired = false;
+      var started, updateRequired = false;
       if (!data) {
         if ($isStarted) {
-          $isStarted = false;
           updateRequired = true;
+          started = false;
         }
       } else {
         if ($curEntryId == data.id) {
           if (!$isStarted) {
-            $isStarted = true;
             updateRequired = true;
+            started = true;
           }
         } else {
           if ($isStarted) {
-            $isStarted = false;
             updateRequired = true;
+            started = false;
           }
         }
       }
       if (updateRequired) {
-        if (!$isStarted) {
+        if (!started) {
           $curEntryId = null;
         }
-        $isStarted = !$isStarted;
-        updateLink();
+        updateLink(started);
       }
     };
 
@@ -195,25 +194,20 @@ function TogglButtonGM(selector, renderer) {
         var opts = '';
         e.preventDefault();
         if ($isStarted) {
-          opts = {type: 'stop'};
+          stopTimeEntry();
         } else {
           var billable = false;
           if ($projectId != undefined && $projectId > 0) {
             billable = $projectMap[$projectId].billable;
           }
           opts = {
-            type: 'timeEntry',
             $projectId: $projectId || null,
             billable: billable,
             description: invokeIfFunction(params.description),
             createdWith: 'TogglButtonGM - ' + params.className
           };
+          createTimeEntry(opts);
         }
-        newMessage(opts);
-        updateLink();
-
-        document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
-
         return false;
       });
 
@@ -221,8 +215,7 @@ function TogglButtonGM(selector, renderer) {
       $isStarted = false;
 
       // check if our link is the current time entry and set the state if it is
-      newMessage({
-        type: 'checkCurrentTimeEntry',
+      checkCurrentTimeEntry({
         $projectId: $projectId,
         description: invokeIfFunction(params.description)
       });
@@ -272,6 +265,7 @@ function TogglButtonGM(selector, renderer) {
           responseData = JSON.parse(res.responseText);
           entryId = responseData && responseData.data && responseData.data.id;
           $curEntryId = entryId;
+          document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
         }
       });
     }
@@ -291,8 +285,7 @@ function TogglButtonGM(selector, renderer) {
             }
             if (params.description === resp.data.description) {
               $curEntryId = resp.data.id;
-              $isStarted = false;
-              updateLink();
+              updateLink(true);
             }
           }
         }
@@ -309,18 +302,11 @@ function TogglButtonGM(selector, renderer) {
         url: $activeApiUrl + "/time_entries/" + entryId + "/stop",
         headers: {
           "Authorization": "Basic " + btoa($api_token + ':api_token')
+        },
+        onload: function () {
+          document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
         }
       });
-    }
-
-    function newMessage(request) {
-      if (request.type === 'timeEntry') {
-        createTimeEntry(request);
-      } else if (request.type === 'stop') {
-        stopTimeEntry();
-      } else if (request.type === 'checkCurrentTimeEntry') {
-        checkCurrentTimeEntry(request);
-      }
     }
 
     function createTag(name, className, innerHTML) {
@@ -350,18 +336,18 @@ function TogglButtonGM(selector, renderer) {
       return link;
     }
 
-    function updateLink() {
+    function updateLink(started) {
       var linkText, color = '';
 
-      if ($isStarted) {
-        $link.classList.remove('active');
-        linkText = 'Start timer';
-      } else {
+      if (started) {
         $link.classList.add('active');
         color = '#1ab351';
         linkText = 'Stop timer';
+      } else {
+        $link.classList.remove('active');
+        linkText = 'Start timer';
       }
-      $isStarted = !$isStarted;
+      $isStarted = started;
 
       $link.setAttribute('style', 'color:'+color+';');
       if (!$buttonTypeMinimal) {
