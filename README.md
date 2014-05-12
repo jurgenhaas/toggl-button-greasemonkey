@@ -60,11 +60,12 @@ Once Greasemonkey is installed, you can either add user scripts from GitHub or t
 Just open one of the PLATFORM.user.js files and then click on "Raw". Your Firefox browser should tell you that you're opening a Greasemonkey user script and provides an option "Install" which you should then click.
 
 The direct links are:
-|PLATFORM|Version 1.0|Latest|
-|--------|--------------|--------------|
-|Drupal  |[Install][301]|[Install][401]|
-|GitHub  |[Install][302]|[Install][402]|
-|YouTrack|[Install][303]|[Install][403]|
+
+| PLATFORM | Version 1.0 | Latest |
+| -------- | -------------- | -------------- |
+| Drupal   | [Install][301] | [Install][401] |
+| GitHub   | [Install][302] | [Install][402] |
+| YouTrack | [Install][303] | [Install][403] |
 
 ###How to install from UserScript###
 
