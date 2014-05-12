@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button Drupal
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.0-rc.1
+// @version     1.0
 // @include     https://drupal.org/node/*
 // @include     https://drupal.org/project/issues/*
 // @include     https://drupal.org/project/user
@@ -12,9 +12,9 @@
 // @grant       GM_setValue
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
-// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-rc.1/TogglLibrary.js
+// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0/TogglLibrary.js
 // @require     http://sizzlemctwizzle.com/423249.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0-rc.1/TogglLibrary.css
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0/TogglLibrary.css
 // ==/UserScript==
 
 new TogglButtonGM('body.node-type-project-issue', function (elem) {
