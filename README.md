@@ -53,16 +53,27 @@ If the Toggl button can't access your Toggl account, it will inform you about it
 
 On Firefox, you have to have Greasemonkey installed first. If you haven't got it installed yet, just go to [Mozilla Greasemonkey][11] and follow the instructions there.
 
-If Greasemonkey is installed, you can either go to [User Scripts][1] or click on the following platforms to install their respective Toggl button script:
+Once Greasemonkey is installed, you can either add user scripts from GitHub or through the userscript.org platform:
+
+###How to install from GitHub###
+
+Just open one of the PLATFORM.user.js files and then click on "Raw". Your Firefox browser should tell you that you're opening a Greasemonkey user script and provides an option "Install" which you should then click.
+
+The direct links are:
+|PLATFORM|Version 1.0|Latest|
+|--------|--------------|--------------|
+|Drupal  |[Install][301]|[Install][401]|
+|GitHub  |[Install][302]|[Install][402]|
+|YouTrack|[Install][303]|[Install][403]|
+
+###How to install from UserScript###
+
+Either go to [User Scripts][1] or click on the following platforms to install their respective Toggl button script:
 * [Drupal][101]
 * [GitHub][102]
 * [YouTrack][103]
 
 If you want to use the scripts on other browsers, please follow the instruction [here][12].
-
-###How to install from source###
-
-This will be documented soon.
 
 ##How to update##
 
@@ -124,3 +135,9 @@ This also means, that the scripts here are in no way *official products* of Togg
 [201]: http://userscripts.org/scripts/show/423249.user.js
 [202]: http://userscripts.org/scripts/show/423257.user.js
 [203]: http://userscripts.org/scripts/show/423156.user.js
+[301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.0/drupal.user.js
+[302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.0/github.user.js
+[303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.0/youtrack.user.js
+[401]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/drupal.user.js
+[402]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/github.user.js
+[403]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/youtrack.user.js
