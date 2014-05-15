@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button GitHub
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.0
+// @version     1.1
 // @include     http*://github.com/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
@@ -10,9 +10,9 @@
 // @grant       GM_setValue
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
-// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0/TogglLibrary.js
+// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.js
 // @require     http://sizzlemctwizzle.com/423257.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.0/TogglLibrary.css
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
 // ==/UserScript==
 
 new TogglButtonGM('#js-discussion-header', function (elem) {

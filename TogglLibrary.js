@@ -2,7 +2,7 @@
  * JavaScript Library for Toggl-Button for Greasemonkey
  *
  * (c) Jürgen Haas
- * Version: 1.0
+ * Version: 1.1
  *
  * @see https://github.com/jurgenhaas/toggl-button-greasemonkey
  *------------------------------------------------------------------------
@@ -37,12 +37,17 @@ function TogglButtonGM(selector, renderer) {
       return;
     }
 
+    var headers = {};
+    if ($api_token) {
+      headers = {
+        "Authorization": "Basic " + btoa($api_token + ':api_token')
+      };
+    }
+    $activeApiUrl = apiUrl;
     GM_xmlhttpRequest({
       method: "GET",
       url: apiUrl + "/me?with_related_data=true",
-      headers: {
-        "Authorization": "Basic " + btoa($api_token + ':api_token')
-      },
+      headers: headers,
       onload: function(result) {
         if (result.status === 200) {
           var resp = JSON.parse(result.responseText);
@@ -69,7 +74,7 @@ function TogglButtonGM(selector, renderer) {
           }
           GM_setValue('_authenticated', new Date().getTime());
           GM_setValue('_api_token', resp.data.api_token);
-          GM_setValue('_api_url', resp.data.api_url);
+          GM_setValue('_api_url', $activeApiUrl);
           GM_setValue('_default_wid', resp.data.default_wid);
           GM_setValue('_clientMap', JSON.stringify($clientMap));
           GM_setValue('_projectMap', JSON.stringify($projectMap));
