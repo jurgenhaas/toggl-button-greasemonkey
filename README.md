@@ -121,7 +121,7 @@ As the author of this set of scripts I do disclose that I am **in no way** assoc
 
 This also means, that the scripts here are in no way *official products* of Toggl and therefore not supported by Toggl or their associates.
 
-[1]: http://userscripts.org:8080/scripts/search?q=toggl-button&submit=
+[1]: http://userscripts.org:8080/tags/toggl
 [2]: https://github.com/jurgenhaas/toggl-button-greasemonkey/pulls
 [10]: https://new.toggl.com
 [11]: https://addons.mozilla.org/en-US/firefox/addon/greasemonkey
