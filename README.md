@@ -121,21 +121,21 @@ As the author of this set of scripts I do disclose that I am **in no way** assoc
 
 This also means, that the scripts here are in no way *official products* of Toggl and therefore not supported by Toggl or their associates.
 
-[1]: http://userscripts.org/scripts/search?q=toggl-button&submit=
+[1]: http://userscripts.org:8080/scripts/search?q=toggl-button&submit=
 [2]: https://github.com/jurgenhaas/toggl-button-greasemonkey/pulls
 [10]: https://new.toggl.com
 [11]: https://addons.mozilla.org/en-US/firefox/addon/greasemonkey
 [12]: http://wiki.greasespot.net/Cross-browser_userscripting
 [13]: https://github.com/toggl/toggl-button
-[14]: http://userscripts.org
+[14]: http://userscripts.org:8080
 [15]: http://www.greasespot.net
 [16]: https://github.com/toggl/toggl_api_docs
-[101]: http://userscripts.org/scripts/source/423249.user.js
-[102]: http://userscripts.org/scripts/source/423257.user.js
-[103]: http://userscripts.org/scripts/source/423156.user.js
-[201]: http://userscripts.org/scripts/show/423249.user.js
-[202]: http://userscripts.org/scripts/show/423257.user.js
-[203]: http://userscripts.org/scripts/show/423156.user.js
+[101]: http://userscripts.org:8080/scripts/source/423249.user.js
+[102]: http://userscripts.org:8080/scripts/source/423257.user.js
+[103]: http://userscripts.org:8080/scripts/source/423156.user.js
+[201]: http://userscripts.org:8080/scripts/show/423249.user.js
+[202]: http://userscripts.org:8080/scripts/show/423257.user.js
+[203]: http://userscripts.org:8080/scripts/show/423156.user.js
 [301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/drupal.user.js
 [302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/github.user.js
 [303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/youtrack.user.js
