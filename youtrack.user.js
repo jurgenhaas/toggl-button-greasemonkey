@@ -11,8 +11,7 @@
 // @grant       GM_setValue
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
-// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.js
-// @require     http://sizzlemctwizzle.com/422156.js
+// @require     https://greasyfork.org/scripts/2670-toggllibrary/code/TogglLibrary.js
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
 // ==/UserScript==
 
