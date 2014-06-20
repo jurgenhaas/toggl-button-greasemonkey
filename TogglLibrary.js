@@ -144,6 +144,7 @@ function TogglButtonGM(selector, renderer) {
       $curEntryId = null,
       $isStarted = false,
       $link = null,
+      $generalInfo = null,
       $buttonTypeMinimal = false,
       $projectSelector = window.location.host,
       $projectId = null,
@@ -158,6 +159,12 @@ function TogglButtonGM(selector, renderer) {
           started = false;
         }
       } else {
+        if ($generalInfo != null) {
+          if (!$isStarted || ($curEntryId != null && $curEntryId != data.id)) {
+            $curEntryId = data.id;
+            $isStarted = false;
+          }
+        }
         if ($curEntryId == data.id) {
           if (!$isStarted) {
             updateRequired = true;
@@ -174,18 +181,56 @@ function TogglButtonGM(selector, renderer) {
         if (!started) {
           $curEntryId = null;
         }
-        updateLink(started);
+        if ($link != null) {
+          updateLink(started);
+        }
+        if ($generalInfo != null) {
+          if (data) {
+            var projectName = 'No project',
+              clientName = 'No client';
+            if (data.pid !== undefined) {
+              projectName = $projectMap[data.pid].name;
+              clientName = $clientMap[$projectMap[data.pid].cid];
+            }
+            var content = createTag('div', 'content'),
+              contentClient = createTag('div', 'client'),
+              contentProject = createTag('div', 'project'),
+              contentDescription = createTag('div', 'description');
+            contentClient.innerHTML = clientName;
+            contentProject.innerHTML = projectName;
+            contentDescription.innerHTML = data.description;
+            content.appendChild(contentClient);
+            content.appendChild(contentProject);
+            content.appendChild(contentDescription);
+            while ($generalInfo.firstChild) {
+              $generalInfo.removeChild($generalInfo.firstChild);
+            }
+            $generalInfo.appendChild(content);
+          }
+          updateGeneralInfo(started);
+        }
       }
     };
 
     createTimerLink(params);
 
     function createTimerLink(params) {
+      GM_addStyle(GM_getResourceText('togglStyle'));
+      if (params.generalMode !== undefined && params.generalMode) {
+        $generalInfo = document.createElement('div');
+        $generalInfo.id = 'toggl-button-gi-wrapper';
+        $generalInfo.addEventListener('click', function (e) {
+          e.preventDefault();
+          $generalInfo.classList.toggle('collapsed');
+        });
+        document.querySelector('body').appendChild($generalInfo);
+        document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
+        return;
+      }
       if (params.projectIds !== undefined) {
         $projectSelector += '-' + params.projectIds.join('-');
       }
       updateProjectId();
-      GM_addStyle(GM_getResourceText('togglStyle'));
       $link = createLink('toggl-button');
       $link.classList.add(params.className);
 
@@ -225,6 +270,7 @@ function TogglButtonGM(selector, renderer) {
         description: invokeIfFunction(params.description)
       });
 
+      document.querySelector('body').classList.add('toggl-button-available');
       if (params.targetSelectors == undefined) {
         var wrapper = document.createElement('div'),
           content = createTag('div', 'content');
@@ -341,14 +387,25 @@ function TogglButtonGM(selector, renderer) {
       return link;
     }
 
+    function updateGeneralInfo(started) {
+      if (started) {
+        $generalInfo.classList.add('active');
+      } else {
+        $generalInfo.classList.remove('active');
+      }
+      $isStarted = started;
+    }
+
     function updateLink(started) {
       var linkText, color = '';
 
       if (started) {
+        document.querySelector('body').classList.add('toggl-button-active');
         $link.classList.add('active');
         color = '#1ab351';
         linkText = 'Stop timer';
       } else {
+        document.querySelector('body').classList.remove('toggl-button-active');
         $link.classList.remove('active');
         linkText = 'Start timer';
       }
