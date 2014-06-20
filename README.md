@@ -53,7 +53,7 @@ If the Toggl button can't access your Toggl account, it will inform you about it
 
 On Firefox, you have to have Greasemonkey installed first. If you haven't got it installed yet, just go to [Mozilla Greasemonkey][11] and follow the instructions there.
 
-Once Greasemonkey is installed, you can either add user scripts from GitHub or through the userscript.org platform:
+Once Greasemonkey is installed, you can either add user scripts from GitHub or through the Greasy Fork platform:
 
 ###How to install from GitHub###
 
@@ -67,9 +67,9 @@ The direct links are:
 | GitHub   | [Install][302] | [Install][402] |
 | YouTrack | [Install][303] | [Install][403] |
 
-###How to install from UserScript###
+###How to install from Greasy Fork###
 
-Either go to [User Scripts][1] or click on the following platforms to install their respective Toggl button script:
+Either go to [Greasy Fork][3] or click on the following platforms to install their respective Toggl button script:
 * [Drupal][101]
 * [GitHub][102]
 * [YouTrack][103]
@@ -94,7 +94,9 @@ However, you can adjust their scope by individually defining the list of domains
 
 ##Useful links##
 
+* [Greasy Fork][17]
 * [User Scripts][14]
+* [Toggl Button Greasy Fork][3]
 * [Toggl Button User Scripts][1]
 * [Greasemonkey Homepage][15]
 * [Greasemonkey AddOn][11]
@@ -123,6 +125,7 @@ This also means, that the scripts here are in no way *official products* of Togg
 
 [1]: http://userscripts.org:8080/tags/toggl
 [2]: https://github.com/jurgenhaas/toggl-button-greasemonkey/pulls
+[3]: https://greasyfork.org/scripts/search?q=toggl
 [10]: https://new.toggl.com
 [11]: https://addons.mozilla.org/en-US/firefox/addon/greasemonkey
 [12]: http://wiki.greasespot.net/Cross-browser_userscripting
@@ -130,12 +133,13 @@ This also means, that the scripts here are in no way *official products* of Togg
 [14]: http://userscripts.org:8080
 [15]: http://www.greasespot.net
 [16]: https://github.com/toggl/toggl_api_docs
-[101]: http://userscripts.org:8080/scripts/source/423249.user.js
-[102]: http://userscripts.org:8080/scripts/source/423257.user.js
-[103]: http://userscripts.org:8080/scripts/source/423156.user.js
-[201]: http://userscripts.org:8080/scripts/show/423249.user.js
-[202]: http://userscripts.org:8080/scripts/show/423257.user.js
-[203]: http://userscripts.org:8080/scripts/show/423156.user.js
+[17]: https://greasyfork.org
+[101]: https://greasyfork.org/scripts/2671-toggl-button-drupal/code/Toggl-Button%20Drupal.user.js
+[102]: https://greasyfork.org/scripts/2674-toggl-button-github/code/Toggl-Button%20GitHub.user.js
+[103]: https://greasyfork.org/scripts/2675-toggl-button-youtrack/code/Toggl-Button%20YouTrack.user.js
+[201]: https://greasyfork.org/scripts/2671-toggl-button-drupal
+[202]: https://greasyfork.org/scripts/2674-toggl-button-github
+[203]: https://greasyfork.org/scripts/2675-toggl-button-youtrack
 [301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/build-007/drupal.user.js
 [302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/github.user.js
 [303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/youtrack.user.js
