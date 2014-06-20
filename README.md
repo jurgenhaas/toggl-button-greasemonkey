@@ -61,7 +61,7 @@ Just open one of the PLATFORM.user.js files and then click on "Raw". Your Firefo
 
 The direct links are:
 
-| PLATFORM | Version 1.0 | Latest |
+| PLATFORM | Stable | Latest |
 | -------- | -------------- | -------------- |
 | Drupal   | [Install][301] | [Install][401] |
 | GitHub   | [Install][302] | [Install][402] |
@@ -136,7 +136,7 @@ This also means, that the scripts here are in no way *official products* of Togg
 [201]: http://userscripts.org:8080/scripts/show/423249.user.js
 [202]: http://userscripts.org:8080/scripts/show/423257.user.js
 [203]: http://userscripts.org:8080/scripts/show/423156.user.js
-[301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/drupal.user.js
+[301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/build-007/drupal.user.js
 [302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/github.user.js
 [303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/youtrack.user.js
 [401]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/drupal.user.js

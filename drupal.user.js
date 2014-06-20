@@ -1,7 +1,10 @@
 // ==UserScript==
 // @name        Toggl-Button Drupal
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.1
+// @version     1.2
+// @include     https://www.drupal.org/node/*
+// @include     https://www.drupal.org/project/issues/*
+// @include     https://www.drupal.org/project/user
 // @include     https://drupal.org/node/*
 // @include     https://drupal.org/project/issues/*
 // @include     https://drupal.org/project/user
