@@ -36,6 +36,10 @@
   overflow: hidden;
   padding: 0;
 }
+#toggl-button-gi-wrapper div.content {
+  margin: 0;
+  padding: 2px;
+}
 #toggl-button-gi-wrapper.collapsed div.content {
   display: none;
 }
@@ -45,6 +49,7 @@
 }
 #toggl-button-gi-wrapper div.project {
   font-weight: bold;
+  background: none;
 }
 .toggl-button-active #toggl-button-gi-wrapper {
   display: none;
