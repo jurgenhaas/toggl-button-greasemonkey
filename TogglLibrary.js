@@ -13,7 +13,8 @@ function TogglButtonGM(selector, renderer) {
   var
     $activeApiUrl = null,
     $apiUrl = "https://www.toggl.com/api/v7",
-    $newApiUrl = "https://new.toggl.com/api/v8",
+    $newApiUrl = "https://www.toggl.com/api/v8",
+    $legacyApiUrl = "https://new.toggl.com/api/v8",
     $triedAlternative = false,
     $api_token = null,
     $default_wid = null,
@@ -33,6 +34,11 @@ function TogglButtonGM(selector, renderer) {
       $default_wid = GM_getValue('_default_wid', 0);
       $clientMap   = JSON.parse(GM_getValue('_clientMap', {}));
       $projectMap  = JSON.parse(GM_getValue('_projectMap', {}));
+      if ($activeApiUrl == $legacyApiUrl) {
+        // See issue #22.
+        $activeApiUrl = $newApiUrl;
+        GM_setValue('_api_url', $activeApiUrl);
+      }
       render(selector, renderer);
       return;
     }
