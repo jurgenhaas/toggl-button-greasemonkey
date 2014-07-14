@@ -195,6 +195,11 @@ function TogglButtonGM(selector, renderer) {
             var projectName = 'No project',
               clientName = 'No client';
             if (data.pid !== undefined) {
+              if ($projectMap[data.pid] == undefined) {
+                GM_setValue('_authenticated', 0);
+                window.location.reload();
+                return;
+              }
               projectName = $projectMap[data.pid].name;
               clientName = $clientMap[$projectMap[data.pid].cid];
             }
