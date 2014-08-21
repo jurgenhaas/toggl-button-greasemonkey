@@ -141,7 +141,7 @@ This also means, that the scripts here are in no way *official products* of Togg
 [202]: https://greasyfork.org/scripts/2674-toggl-button-github
 [203]: https://greasyfork.org/scripts/2675-toggl-button-youtrack
 [301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/build-007/drupal.user.js
-[302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/github.user.js
+[302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.2/github.user.js
 [303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/youtrack.user.js
 [401]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/drupal.user.js
 [402]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/github.user.js
