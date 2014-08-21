@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button GitHub
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.1
+// @version     1.2
 // @include     http*://github.com/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
@@ -14,7 +14,7 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
 // ==/UserScript==
 
-new TogglButtonGM('#js-discussion-header', function (elem) {
+new TogglButtonGM('#partial-discussion-header', function (elem) {
   var description, projectIds = [],
     numElem = elem.querySelector('.gh-header-number', elem),
     titleElem = elem.querySelector('.js-issue-title', elem),
