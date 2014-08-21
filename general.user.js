@@ -14,8 +14,10 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
 // ==/UserScript==
 
-new TogglButtonGM('body', function (elem) {
-  return {
-    generalMode: true
-  };
-});
+if (self == top) {
+  new TogglButtonGM('body', function (elem) {
+    return {
+      generalMode: true
+    };
+  });
+}
