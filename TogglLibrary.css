@@ -39,6 +39,8 @@
 #toggl-button-gi-wrapper div.content {
   margin: 0;
   padding: 2px;
+  min-height: 0;
+  color: #000;
 }
 #toggl-button-gi-wrapper.collapsed div.content {
   display: none;
