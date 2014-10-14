@@ -144,6 +144,12 @@ function TogglButtonGM(selector, renderer) {
     });
   }
 
+  this.clickLinks = function() {
+    for (i in $instances) {
+      $instances[i].clickLink();
+    }
+  };
+
   function TogglButtonGMInstance(params) {
 
     var
@@ -221,6 +227,10 @@ function TogglButtonGM(selector, renderer) {
           updateGeneralInfo(started);
         }
       }
+    };
+
+    this.clickLink = function (data) {
+      $link.dispatchEvent(new CustomEvent('click'));
     };
 
     createTimerLink(params);
