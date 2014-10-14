@@ -29,46 +29,48 @@ var observer = new MutationObserver(function(mutations) {
           if (taskDetail !== null) {
             var taskID = taskDetail.id.substr(13),
               taskDetailTarget = taskDetail.querySelector('div'),
+              taskDetailProcessed = false,
               innerObserver = new MutationObserver(function (mutations) {
-              mutations.forEach(function (mutation) {
-                if (mutation.type === 'childList') {
-                  var titleElem = document.querySelector('.taskDetailsName span');
-                  if (titleElem !== null) {
-                    innerObserver.disconnect();
-                    var tb = new TogglButtonGM('#Task', function (elem) {
-                      var description, projectIds = [],
-                        projectElem = document.querySelector('#projectName'),
-                        linkElem = document.querySelector('#ViewTaskSidebar .blue2.ql');
+                mutations.forEach(function (mutation) {
+                  if (mutation.type === 'childList' && !taskDetailProcessed) {
+                    var titleElem = document.querySelector('.taskDetailsName span');
+                    if (titleElem !== null) {
+                      innerObserver.disconnect();
+                      taskDetailProcessed = true;
+                      var tb = new TogglButtonGM('#Task', function (elem) {
+                        var description, projectIds = [],
+                          projectElem = document.querySelector('#projectName'),
+                          linkElem = document.querySelector('#ViewTaskSidebar .blue2.ql');
 
-                      description = taskID + " " + titleElem.textContent.trim();
+                        description = taskID + " " + titleElem.textContent.trim();
 
-                      if (projectElem !== null) {
-                        projectIds.push(projectElem.textContent.trim());
-                      }
-                      if (linkElem !== null) {
-                        projectIds.push(linkElem.textContent.trim());
-                      }
+                        if (projectElem !== null) {
+                          projectIds.push(projectElem.textContent.trim());
+                        }
+                        if (linkElem !== null) {
+                          projectIds.push(linkElem.textContent.trim());
+                        }
 
-                      return {
-                        className: 'teamwork',
-                        description: description,
-                        projectIds: projectIds
-                      };
-                    });
+                        return {
+                          className: 'teamwork',
+                          description: description,
+                          projectIds: projectIds
+                        };
+                      });
 
-                    // TODO: rework the following click events.
-                    document.querySelector('.startTimer button').addEventListener('click', function () {
-                      tb.clickLinks();
-                      setTimeout(function () {
-                        document.querySelector('#timerBar .timer-log-time').addEventListener('click', function () {
-                          tb.clickLinks();
-                        });
-                      }, 2000);
-                    });
+                      // TODO: rework the following click events.
+                      document.querySelector('.startTimer button').addEventListener('click', function () {
+                        tb.clickLinks();
+                        setTimeout(function () {
+                          document.querySelector('#timerBar .timer-log-time').addEventListener('click', function () {
+                            tb.clickLinks();
+                          });
+                        }, 2000);
+                      });
+                    }
                   }
-                }
+                });
               });
-            });
             innerObserver.observe(taskDetailTarget, config);
           }
         });
