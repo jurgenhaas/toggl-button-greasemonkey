@@ -116,6 +116,9 @@ function TogglButtonGM(selector, renderer) {
   }
 
   function render(selector, renderer) {
+    if (selector == null) {
+      return;
+    }
     var i, len, elems = document.querySelectorAll(selector);
     for (i = 0, len = elems.length; i < len; i += 1) {
       elems[i].classList.add('toggl');
@@ -148,6 +151,45 @@ function TogglButtonGM(selector, renderer) {
     for (i in $instances) {
       $instances[i].clickLink();
     }
+  };
+
+  this.getCurrentTimeEntry = function(callback) {
+    GM_xmlhttpRequest({
+      method: "GET",
+      url: $activeApiUrl + "/time_entries/current",
+      headers: {
+        "Authorization": "Basic " + btoa($api_token + ':api_token')
+      },
+      onload: function (result) {
+        if (result.status === 200) {
+          var resp = JSON.parse(result.responseText),
+            data = resp.data || false;
+          if (data) {
+            callback(data.id, true);
+          }
+        }
+      }
+    });
+  };
+
+  this.stopTimeEntry = function(entryId, asCallback) {
+    if (entryId == null) {
+      if (asCallback) {
+        return;
+      }
+      this.getCurrentTimeEntry(this.stopTimeEntry);
+      return;
+    }
+    GM_xmlhttpRequest({
+      method: "PUT",
+      url: $activeApiUrl + "/time_entries/" + entryId + "/stop",
+      headers: {
+        "Authorization": "Basic " + btoa($api_token + ':api_token')
+      },
+      onload: function () {
+        document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
+      }
+    });
   };
 
   function TogglButtonGMInstance(params) {
