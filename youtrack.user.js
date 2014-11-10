@@ -20,7 +20,7 @@ new TogglButtonGM('.fsi-layout.container', function (elem) {
     numElem = elem.querySelector('.issueId', elem),
     titleElem = elem.querySelector('.issue-summary', elem),
     projectElem = document.querySelector('.fsi-properties .fsi-property .regCC a'),
-    linkElem = document.querySelector('.fsi-content .links-panel .links .link');
+    linkElem = document.querySelector('.issueContainer .links-panel .links .link');
 
   description = titleElem.textContent.trim();
   if (numElem !== null) {
@@ -28,9 +28,11 @@ new TogglButtonGM('.fsi-layout.container', function (elem) {
   }
 
   if (projectElem !== null) {
+    console.log("Project: " + projectElem.textContent.trim());
     projectIds.push(projectElem.textContent.trim());
   }
   if (linkElem !== null) {
+    console.log("Link: " + linkElem.textContent.trim());
     projectIds.push(linkElem.textContent.trim());
   }
 
