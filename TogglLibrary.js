@@ -203,7 +203,8 @@ function TogglButtonGM(selector, renderer) {
       $projectSelector = window.location.host,
       $projectId = null,
       $projectSelected = false,
-      $projectSelectElem = null;
+      $projectSelectElem = null,
+      $stopCallback = null;
 
     this.checkCurrentLinkStatus = function (data) {
       var started, updateRequired = false;
@@ -292,6 +293,9 @@ function TogglButtonGM(selector, renderer) {
       }
       if (params.projectIds !== undefined) {
         $projectSelector += '-' + params.projectIds.join('-');
+      }
+      if (params.stopCallback !== undefined) {
+        $stopCallback = params.stopCallback;
       }
       updateProjectId();
       $link = createLink('toggl-button');
@@ -417,8 +421,18 @@ function TogglButtonGM(selector, renderer) {
         headers: {
           "Authorization": "Basic " + btoa($api_token + ':api_token')
         },
-        onload: function () {
+        onload: function (result) {
           document.dispatchEvent(new CustomEvent('TogglButtonGMUpdateStatus'));
+          if (result.status === 200) {
+            var resp = JSON.parse(result.responseText),
+              data = resp.data || false;
+            if (data) {
+              if ($stopCallback !== undefined) {
+                var currentdate = new Date();
+                $stopCallback((currentdate.getTime() - (data.duration * 1000)), data.duration);
+              }
+            }
+          }
         }
       });
     }

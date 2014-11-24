@@ -15,30 +15,52 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
 // ==/UserScript==
 
-new TogglButtonGM('.fsi-layout.container', function (elem) {
+var button = new TogglButtonGM('.fsi-layout.container', function (elem) {
   var description, projectIds = [],
     numElem = elem.querySelector('.issueId', elem),
     titleElem = elem.querySelector('.issue-summary', elem),
     projectElem = document.querySelector('.fsi-properties .fsi-property .regCC a'),
-    linkElem = document.querySelector('.issueContainer .links-panel .links .link');
+    linkElem = document.querySelector('.issueContainer .links-panel .links .link'),
+    stopCallback = null;
 
   description = titleElem.textContent.trim();
   if (numElem !== null) {
     description = numElem.textContent.trim() + " " + description;
+    stopCallback = function(date, duration) {
+      var parts = numElem.textContent.trim().split('-');
+      GM_xmlhttpRequest({
+        method: "GET",
+        url: document.location.origin + "/rest/admin/project/" + parts[0] + "/timetracking",
+        onload: function (result) {
+          if (result.status === 200) {
+            if (result.responseText.indexOf('<settings enabled="true">') > 0) {
+              GM_xmlhttpRequest({
+                method: "POST",
+                url: document.location.origin + "/rest/issue/" + numElem.textContent.trim() + "/timetracking/workitem",
+                headers: {
+                  "Content-Type": "application/xml"
+                },
+                dataType: 'xml',
+                data: '<workItem><date>'+date+'</date><duration>'+Math.floor(duration / 60)+'</duration><description>automatic</description></workItem>'
+              });
+            }
+          }
+        }
+      });
+    }
   }
 
   if (projectElem !== null) {
-    console.log("Project: " + projectElem.textContent.trim());
     projectIds.push(projectElem.textContent.trim());
   }
   if (linkElem !== null) {
-    console.log("Link: " + linkElem.textContent.trim());
     projectIds.push(linkElem.textContent.trim());
   }
 
   return {
     className: 'youtrack',
     description: description,
-    projectIds: projectIds
+    projectIds: projectIds,
+    stopCallback: stopCallback
   };
 });
