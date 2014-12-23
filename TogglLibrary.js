@@ -135,8 +135,10 @@ function TogglButtonGM(selector, renderer) {
           if (result.status === 200) {
             var resp = JSON.parse(result.responseText),
               data = resp.data || false;
-            for (i in $instances) {
-              $instances[i].checkCurrentLinkStatus(data);
+            if (data) {
+              for (i in $instances) {
+                $instances[i].checkCurrentLinkStatus(data);
+              }
             }
           }
         }

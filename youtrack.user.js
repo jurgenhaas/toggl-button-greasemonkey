@@ -15,7 +15,7 @@
 // @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
 // ==/UserScript==
 
-var button = new TogglButtonGM('.fsi-layout.container', function (elem) {
+new TogglButtonGM('.fsi-layout.container .content_fsi', function (elem) {
   var description, projectIds = [],
     numElem = elem.querySelector('.issueId', elem),
     titleElem = elem.querySelector('.issue-summary', elem),
