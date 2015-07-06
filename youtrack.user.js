@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button YouTrack
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.1
+// @version     1.2
 // @include     http*://youtrack.*/*
 // @include     http*://*/youtrack/*
 // @grant       GM_xmlhttpRequest
@@ -12,7 +12,8 @@
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
 // @require     https://greasyfork.org/scripts/2670-toggllibrary/code/TogglLibrary.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.3/TogglLibrary.css
+// @description Toggle button for YouTrack
 // ==/UserScript==
 
 new TogglButtonGM('.fsi-layout.container .content_fsi', function (elem) {

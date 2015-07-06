@@ -11,7 +11,8 @@
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
 // @require     https://greasyfork.org/scripts/2670-toggllibrary/code/TogglLibrary.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.3/TogglLibrary.css
+// @description Toggle button for TeamWork
 // ==/UserScript==
 
 var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,

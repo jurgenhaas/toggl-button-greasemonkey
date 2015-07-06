@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button Zendone
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.1
+// @version     0.9
 // @include     https://drupal.org/node/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
@@ -10,8 +10,9 @@
 // @grant       GM_setValue
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
-// @require     https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
+// @require     https://greasyfork.org/scripts/2670-toggllibrary/code/TogglLibrary.js
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.3/TogglLibrary.css
+// @description Toggle button for ZenDone
 // ==/UserScript==
 
 

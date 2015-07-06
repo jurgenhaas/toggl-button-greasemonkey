@@ -64,11 +64,11 @@ The direct links are:
 | PLATFORM | Stable         | Latest         |
 | -------- | -------------- | -------------- |
 | Drupal   | [Install][301] | [Install][401] |
-| General  |                | [Install][405] |
+| General  | [Install][305] | [Install][405] |
 | GitHub   | [Install][302] | [Install][402] |
-| Gitlab   |                | [Install][404] |
-| Redmine  |                | [Install][406] |
-| TeamWork |                | [Install][407] |
+| Gitlab   | [Install][304] | [Install][404] |
+| Redmine  | [Install][306] | [Install][406] |
+| TeamWork | [Install][307] | [Install][407] |
 | YouTrack | [Install][303] | [Install][403] |
 
 ###How to install from Greasy Fork###
@@ -160,13 +160,13 @@ This also means, that the scripts here are in no way *official products* of Togg
 [205]: https://greasyfork.org/scripts/2673-toggl-button
 [206]: https://greasyfork.org/scripts/10811-toggl-button-redmine
 [207]: https://greasyfork.org/scripts/10809-toggl-button-teamwork
-[301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/build-007/drupal.user.js
-[302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.2/github.user.js
-[303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/youtrack.user.js
-[304]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/gitlab.user.js
-[305]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/general.user.js
-[306]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/redmine.user.js
-[307]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/teamwork.user.js
+[301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.3/drupal.user.js
+[302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.3/github.user.js
+[303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.3/youtrack.user.js
+[304]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.3/gitlab.user.js
+[305]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.3/general.user.js
+[306]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.3/redmine.user.js
+[307]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.3/teamwork.user.js
 [401]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/drupal.user.js
 [402]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/github.user.js
 [403]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/youtrack.user.js

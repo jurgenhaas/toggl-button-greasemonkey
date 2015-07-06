@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button Drupal
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.2
+// @version     1.3
 // @include     https://www.drupal.org/node/*
 // @include     https://www.drupal.org/project/issues/*
 // @include     https://www.drupal.org/project/user
@@ -16,7 +16,8 @@
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
 // @require     https://greasyfork.org/scripts/2670-toggllibrary/code/TogglLibrary.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.3/TogglLibrary.css
+// @description Toggle button for Drupal issue queues
 // ==/UserScript==
 
 new TogglButtonGM('body.node-type-project-issue', function (elem) {

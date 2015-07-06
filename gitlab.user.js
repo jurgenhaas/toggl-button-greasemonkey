@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Toggl-Button Gitlab
 // @namespace   https://github.com/jurgenhaas/toggl-button-greasemonkey
-// @version     1.2
+// @version     1.0
 // @include     http*://gitlab.com/*
 // @grant       GM_xmlhttpRequest
 // @grant       GM_addStyle
@@ -11,7 +11,8 @@
 // @grant       GM_info
 // @grant       GM_registerMenuCommand
 // @require     https://greasyfork.org/scripts/2670-toggllibrary/code/TogglLibrary.js
-// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.1/TogglLibrary.css
+// @resource    togglStyle https://raw.githubusercontent.com/jurgenhaas/toggl-button-greasemonkey/v1.3/TogglLibrary.css
+// @description Toggle button for Gitlab
 // ==/UserScript==
 
 new TogglButtonGM('.issue-details', function (elem) {
