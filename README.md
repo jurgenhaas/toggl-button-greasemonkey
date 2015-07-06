@@ -66,6 +66,7 @@ The direct links are:
 | Drupal   | [Install][301] | [Install][401] |
 | GitHub   | [Install][302] | [Install][402] |
 | YouTrack | [Install][303] | [Install][403] |
+| Gitlab   | [Install][304] | [Install][404] |
 
 ###How to install from Greasy Fork###
 
@@ -143,6 +144,8 @@ This also means, that the scripts here are in no way *official products* of Togg
 [301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/build-007/drupal.user.js
 [302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.2/github.user.js
 [303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/youtrack.user.js
+[304]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/gitlab.user.js
 [401]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/drupal.user.js
 [402]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/github.user.js
 [403]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/youtrack.user.js
+[404]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/gitlab.user.js
