@@ -61,14 +61,14 @@ Just open one of the PLATFORM.user.js files and then click on "Raw". Your Firefo
 
 The direct links are:
 
-| PLATFORM | Stable | Latest |
+| PLATFORM | Stable         | Latest         |
 | -------- | -------------- | -------------- |
 | Drupal   | [Install][301] | [Install][401] |
-| General  | [Install][305] | [Install][405] |
+| General  |                | [Install][405] |
 | GitHub   | [Install][302] | [Install][402] |
-| Gitlab   | [Install][304] | [Install][404] |
-| Redmine  | [Install][306] | [Install][406] |
-| TeamWork | [Install][307] | [Install][407] |
+| Gitlab   |                | [Install][404] |
+| Redmine  |                | [Install][406] |
+| TeamWork |                | [Install][407] |
 | YouTrack | [Install][303] | [Install][403] |
 
 ###How to install from Greasy Fork###
