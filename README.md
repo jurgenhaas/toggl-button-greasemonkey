@@ -64,15 +64,22 @@ The direct links are:
 | PLATFORM | Stable | Latest |
 | -------- | -------------- | -------------- |
 | Drupal   | [Install][301] | [Install][401] |
+| General  | [Install][305] | [Install][405] |
 | GitHub   | [Install][302] | [Install][402] |
-| YouTrack | [Install][303] | [Install][403] |
 | Gitlab   | [Install][304] | [Install][404] |
+| Redmine  | [Install][306] | [Install][406] |
+| TeamWork | [Install][307] | [Install][407] |
+| YouTrack | [Install][303] | [Install][403] |
 
 ###How to install from Greasy Fork###
 
 Either go to [Greasy Fork][3] or click on the following platforms to install their respective Toggl button script:
 * [Drupal][101]
+* [General][105]
 * [GitHub][102]
+* [Gitlab][104]
+* [Redmine][106]
+* [TeamWork][107]
 * [YouTrack][103]
 
 If you want to use the scripts on other browsers, please follow the instruction [here][12].
@@ -106,7 +113,11 @@ However, you can adjust their scope by individually defining the list of domains
 * [Official Toggl Button for Chrome][13]
 * Available Toggl Button for Greasemonkey Scripts:
   * [Drupal][201]
+  * [General][205]
   * [GitHub][202]
+  * [Gitlab][204]
+  * [Redmine][206]
+  * [TeamWork][207]
   * [YouTrack][203]
 
 ##Credits##
@@ -138,14 +149,28 @@ This also means, that the scripts here are in no way *official products* of Togg
 [101]: https://greasyfork.org/scripts/2671-toggl-button-drupal/code/Toggl-Button%20Drupal.user.js
 [102]: https://greasyfork.org/scripts/2674-toggl-button-github/code/Toggl-Button%20GitHub.user.js
 [103]: https://greasyfork.org/scripts/2675-toggl-button-youtrack/code/Toggl-Button%20YouTrack.user.js
+[104]: https://greasyfork.org/scripts/10810-toggl-button-github/code/Toggl-Button%20Gitlab.user.js
+[105]: https://greasyfork.org/scripts/2673-toggl-button-github/code/Toggl-Button.user.js
+[106]: https://greasyfork.org/scripts/10811-toggl-button-github/code/Toggl-Button%20Redmine.user.js
+[107]: https://greasyfork.org/scripts/10809-toggl-button-github/code/Toggl-Button%20TeamWork.user.js
 [201]: https://greasyfork.org/scripts/2671-toggl-button-drupal
 [202]: https://greasyfork.org/scripts/2674-toggl-button-github
 [203]: https://greasyfork.org/scripts/2675-toggl-button-youtrack
+[204]: https://greasyfork.org/scripts/10810-toggl-button-gitlab
+[205]: https://greasyfork.org/scripts/2673-toggl-button
+[206]: https://greasyfork.org/scripts/10811-toggl-button-redmine
+[207]: https://greasyfork.org/scripts/10809-toggl-button-teamwork
 [301]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/build-007/drupal.user.js
 [302]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.2/github.user.js
 [303]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/v1.1/youtrack.user.js
 [304]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/gitlab.user.js
+[305]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/general.user.js
+[306]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/redmine.user.js
+[307]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/teamwork.user.js
 [401]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/drupal.user.js
 [402]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/github.user.js
 [403]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/youtrack.user.js
 [404]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/gitlab.user.js
+[405]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/general.user.js
+[406]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/redmine.user.js
+[407]: https://github.com/jurgenhaas/toggl-button-greasemonkey/raw/master/teamwork.user.js
