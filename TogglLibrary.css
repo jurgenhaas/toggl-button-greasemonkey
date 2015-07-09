@@ -140,3 +140,8 @@
   color: #ffffff;
   text-decoration: underline;
 }
+
+/* Special positioning on TeamWork */
+body#tasks #toggl-button-wrapper {
+  bottom: 40px;
+}
