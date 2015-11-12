@@ -1,7 +1,7 @@
 Toggl Button for Greasemonkey/Firefox
 =====================================
 
-Time tracking should be as simple as possible - otherwise it won't happen in the first place!
+Time  tracking should be as simple as possible - otherwise it won't happen in the first place!
 
 [Toggl][10] as a platform does an amazing job with this and is available on (almost) any platform you can possibly think of. They also make available an [Official Toggl Button for Chrome][13] and the project here has been heavily inspired by that open source project. The motivation to develop and maintain it is simply the fact that I'm a Firefox user and therefore wasn't able to use the official solution.
 
